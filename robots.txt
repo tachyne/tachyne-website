@@ -1,0 +1,5 @@
+# tachyne.com — all crawlers welcome
+User-agent: *
+Allow: /
+
+Sitemap: https://tachyne.com/sitemap.xml
