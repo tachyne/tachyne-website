@@ -82,7 +82,9 @@
     font-family: var(--sans);
     line-height: 1.6;
     -webkit-font-smoothing: antialiased;
-    overflow-x: hidden;
+    /* clip (not hidden) so it doesn't create a scroll container that would
+       break the sticky nav; kills any horizontal spill on narrow screens */
+    overflow-x: clip;
   }
   a { color: inherit; text-decoration: none; }
   ::selection { background: var(--glow); }
@@ -307,6 +309,13 @@
     .nav-links a.hide-sm { display: none; }
     .diagram { order: 2; }
   }
+  @media (max-width: 620px) {
+    /* collapse the nav to brand + Play + theme so it never outgrows the phone */
+    .nav-links a.hide-xs { display: none; }
+    .nav-links { gap: 6px; }
+    .wrap { padding: 0 16px; }
+    h1 { font-size: clamp(34px, 11vw, 46px); }
+  }
   @media (max-width: 520px) {
     .foot-grid { grid-template-columns: 1fr; }
   }
@@ -328,8 +337,8 @@
     <nav class="nav-links">
       <a class="hide-sm" href="#modules">Modules</a>
       <a class="hide-sm" href="#start">Get&nbsp;started</a>
-      <a href="https://github.com/tachyne/tachyne-world#what-to-expect-vanilla-parity-at-a-glance">Features</a>
-      <a href="https://github.com/tachyne">GitHub</a>
+      <a class="hide-xs" href="https://github.com/tachyne/tachyne-world#what-to-expect-vanilla-parity-at-a-glance">Features</a>
+      <a class="hide-xs" href="https://github.com/tachyne">GitHub</a>
       <a class="nav-cta" href="#start">Play&nbsp;→</a>
       <button class="toggle" id="themeToggle" aria-label="Toggle theme" title="Toggle light / dark">◐</button>
     </nav>
