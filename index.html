@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="A Minecraft-compatible server, written from scratch in pure Go, with a versionless core. Java 1.21.5–1.21.8, Java 26.2, and Bedrock join one world.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="tachyne — one world, every client">
+<meta property="og:description" content="A Minecraft-compatible server, written from scratch in pure Go, with a versionless core. Java 1.21.5–1.21.8, Java 26.2, and Bedrock join one world.">
+<meta property="og:url" content="https://tachyne.com">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#0e1512">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><polygon points='12,1 22,6 12,11 2,6' fill='%234def9a'/><polygon points='2,6 12,11 12,23 2,18' fill='%231f9d63'/><polygon points='22,6 12,11 12,23 22,18' fill='%23137a4a'/></svg>">
+<title>tachyne — one world, every client</title>
+<style>
+  :root {
+    /* deepslate neutrals with a green bias — chosen, not defaulted */
+    --bg: #0e1512;
+    --bg-2: #0b110e;
+    --surface: #141d19;
+    --surface-2: #182420;
+    --line: #26332d;
+    --line-2: #324139;
+    --ink: #e9f1ec;
+    --ink-dim: #a9bcb2;
+    --ink-faint: #7a8d84;
+    /* two Minecraft-material accents: emerald primary, copper secondary */
+    --emerald: #34d98a;
+    --emerald-deep: #1f9d63;
+    --copper: #d1874e;
+    --copper-deep: #a9612f;
+    --glow: rgba(52, 217, 138, 0.16);
+    --shadow: 0 1px 0 rgba(255,255,255,0.02), 0 18px 40px -24px rgba(0,0,0,0.8);
+
+    --maxw: 1120px;
+    --mono: ui-monospace, "SF Mono", "JetBrains Mono", "Fira Code", Menlo, Consolas, monospace;
+    --sans: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    color-scheme: dark;
+  }
+  @media (prefers-color-scheme: light) {
+    :root {
+      --bg: #eef2ee;
+      --bg-2: #e4eae4;
+      --surface: #ffffff;
+      --surface-2: #f4f7f4;
+      --line: #d8e0d9;
+      --line-2: #c6d1c7;
+      --ink: #10201a;
+      --ink-dim: #45564d;
+      --ink-faint: #6c7d73;
+      --emerald: #148a52;
+      --emerald-deep: #0d7043;
+      --copper: #b0602b;
+      --copper-deep: #8f4c1f;
+      --glow: rgba(20, 138, 82, 0.12);
+      --shadow: 0 1px 0 rgba(255,255,255,0.6), 0 18px 40px -26px rgba(20,40,30,0.35);
+      color-scheme: light;
+    }
+  }
+  :root[data-theme="light"] {
+    --bg: #eef2ee; --bg-2: #e4eae4; --surface: #ffffff; --surface-2: #f4f7f4;
+    --line: #d8e0d9; --line-2: #c6d1c7; --ink: #10201a; --ink-dim: #45564d;
+    --ink-faint: #6c7d73; --emerald: #148a52; --emerald-deep: #0d7043;
+    --copper: #b0602b; --copper-deep: #8f4c1f; --glow: rgba(20,138,82,0.12);
+    --shadow: 0 1px 0 rgba(255,255,255,0.6), 0 18px 40px -26px rgba(20,40,30,0.35);
+    color-scheme: light;
+  }
+  :root[data-theme="dark"] {
+    --bg: #0e1512; --bg-2: #0b110e; --surface: #141d19; --surface-2: #182420;
+    --line: #26332d; --line-2: #324139; --ink: #e9f1ec; --ink-dim: #a9bcb2;
+    --ink-faint: #7a8d84; --emerald: #34d98a; --emerald-deep: #1f9d63;
+    --copper: #d1874e; --copper-deep: #a9612f; --glow: rgba(52,217,138,0.16);
+    --shadow: 0 1px 0 rgba(255,255,255,0.02), 0 18px 40px -24px rgba(0,0,0,0.8);
+    color-scheme: dark;
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--sans);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+  a { color: inherit; text-decoration: none; }
+  ::selection { background: var(--glow); }
+
+  .wrap { width: 100%; max-width: var(--maxw); margin: 0 auto; padding: 0 24px; }
+
+  .eyebrow {
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--emerald);
+    margin: 0 0 14px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .eyebrow::before {
+    content: ""; width: 9px; height: 9px; background: var(--emerald);
+    box-shadow: 0 0 0 2px var(--bg), 0 0 0 3px var(--emerald);
+  }
+
+  /* ---- pixel voxel logomark ---- */
+  .voxel { width: 26px; height: 26px; flex: none; image-rendering: pixelated; }
+
+  /* ---- nav ---- */
+  header.nav {
+    position: sticky; top: 0; z-index: 50;
+    background: color-mix(in srgb, var(--bg) 82%, transparent);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--line);
+  }
+  .nav-in { display: flex; align-items: center; justify-content: space-between; height: 62px; }
+  .brand { display: flex; align-items: center; gap: 11px; font-family: var(--mono); font-weight: 600; font-size: 17px; letter-spacing: -0.01em; }
+  .brand b { color: var(--ink); font-weight: 700; }
+  .nav-links { display: flex; align-items: center; gap: 4px; }
+  .nav-links a {
+    font-family: var(--mono); font-size: 13.5px; color: var(--ink-dim);
+    padding: 8px 12px; border-radius: 2px; transition: color .15s, background .15s;
+  }
+  .nav-links a:hover { color: var(--ink); background: var(--surface); }
+  .nav-cta {
+    color: var(--bg) !important; background: var(--emerald);
+    font-weight: 600; border: 1px solid var(--emerald);
+  }
+  .nav-cta:hover { background: var(--emerald-deep) !important; color: var(--bg) !important; }
+  :root[data-theme="light"] .nav-cta, :root:not([data-theme="dark"]) .nav-cta { color: #fff !important; }
+  @media (prefers-color-scheme: light) { .nav-cta { color: #fff !important; } }
+
+  .btn {
+    display: inline-flex; align-items: center; gap: 9px;
+    font-family: var(--mono); font-size: 14px; font-weight: 600;
+    padding: 12px 20px; border-radius: 2px; cursor: pointer;
+    border: 1px solid var(--line-2); color: var(--ink); background: var(--surface);
+    transition: transform .12s ease, border-color .15s, background .15s;
+  }
+  .btn:hover { transform: translateY(-1px); border-color: var(--emerald); }
+  .btn-primary { background: var(--emerald); border-color: var(--emerald); color: #05130c; }
+  .btn-primary:hover { background: var(--emerald-deep); border-color: var(--emerald-deep); color: #05130c; }
+  .btn .arw { transition: transform .15s; }
+  .btn:hover .arw { transform: translateX(3px); }
+
+  /* ---- hero ---- */
+  .hero { position: relative; padding: 74px 0 40px; overflow: hidden; }
+  .hero::before {
+    content: ""; position: absolute; inset: 0; z-index: 0; pointer-events: none;
+    background-image:
+      linear-gradient(var(--line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--line) 1px, transparent 1px);
+    background-size: 30px 30px;
+    -webkit-mask-image: radial-gradient(120% 90% at 78% 8%, #000 0%, transparent 62%);
+    mask-image: radial-gradient(120% 90% at 78% 8%, #000 0%, transparent 62%);
+    opacity: .5;
+  }
+  .hero-grid {
+    position: relative; z-index: 1;
+    display: grid; grid-template-columns: 1.05fr 0.95fr; gap: 48px; align-items: center;
+  }
+  h1 {
+    font-family: var(--mono); font-weight: 700;
+    font-size: clamp(38px, 6vw, 62px); line-height: 1.02; letter-spacing: -0.03em;
+    margin: 0 0 22px; text-wrap: balance;
+  }
+  h1 .accent { color: var(--emerald); }
+  .lede { font-size: clamp(16px, 2vw, 19px); color: var(--ink-dim); max-width: 46ch; margin: 0 0 30px; }
+  .lede b { color: var(--ink); font-weight: 600; }
+  .hero-cta { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 30px; }
+  .facts { display: flex; flex-wrap: wrap; gap: 8px 8px; }
+  .fact {
+    font-family: var(--mono); font-size: 12px; color: var(--ink-dim);
+    border: 1px solid var(--line); border-radius: 2px; padding: 5px 10px; background: var(--surface);
+  }
+  .fact b { color: var(--emerald); font-weight: 600; }
+
+  /* ---- architecture diagram ---- */
+  .diagram {
+    background: linear-gradient(180deg, var(--surface), var(--surface-2));
+    border: 1px solid var(--line); border-radius: 4px; padding: 22px 20px 16px;
+    box-shadow: var(--shadow);
+  }
+  .diagram .cap {
+    font-family: var(--mono); font-size: 11px; letter-spacing: .12em; text-transform: uppercase;
+    color: var(--ink-faint); margin: 0 0 14px; display:flex; justify-content:space-between;
+  }
+  .diagram svg { width: 100%; height: auto; display: block; }
+  .node-box { fill: var(--surface-2); stroke: var(--line-2); }
+  .node-engine { fill: color-mix(in srgb, var(--emerald) 14%, var(--surface)); stroke: var(--emerald); }
+  .node-t { font-family: var(--mono); font-size: 12px; fill: var(--ink); font-weight: 600; }
+  .node-s { font-family: var(--mono); font-size: 9px; fill: var(--ink-faint); }
+  .edge { stroke: var(--line-2); stroke-width: 1.5; fill: none; }
+  .flow { stroke: var(--emerald); stroke-width: 1.6; fill: none; stroke-dasharray: 3 7; opacity: .9; }
+  @media (prefers-reduced-motion: no-preference) {
+    .flow { animation: dash 1.1s linear infinite; }
+  }
+  @keyframes dash { to { stroke-dashoffset: -20; } }
+  .pulse { fill: var(--emerald); }
+  @media (prefers-reduced-motion: no-preference) {
+    .pulse { animation: beat 2.4s ease-in-out infinite; transform-origin: center; }
+  }
+  @keyframes beat { 0%,100%{ opacity:.35 } 50%{ opacity:1 } }
+
+  /* ---- sections ---- */
+  section { position: relative; padding: 72px 0; }
+  .sec-head { max-width: 60ch; margin: 0 0 40px; }
+  h2 { font-family: var(--mono); font-weight: 700; font-size: clamp(26px, 3.4vw, 34px); letter-spacing: -0.02em; margin: 0 0 12px; text-wrap: balance; }
+  .sec-head p { color: var(--ink-dim); font-size: 16.5px; margin: 0; }
+  .divider { border: 0; border-top: 1px solid var(--line); margin: 0; }
+
+  /* feature grid */
+  .feat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: 4px; overflow: hidden; }
+  .feat {
+    background: var(--surface); padding: 26px 24px 28px;
+    transition: background .18s;
+  }
+  .feat:hover { background: var(--surface-2); }
+  .feat .ico { width: 30px; height: 30px; margin-bottom: 16px; color: var(--emerald); }
+  .feat h3 { font-family: var(--mono); font-size: 16px; font-weight: 600; margin: 0 0 8px; letter-spacing: -0.01em; }
+  .feat p { margin: 0; color: var(--ink-dim); font-size: 14.5px; line-height: 1.55; }
+
+  /* ---- modules ---- */
+  .mods-band { background: var(--bg-2); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+  .mod-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+  .mod {
+    display: flex; flex-direction: column;
+    background: var(--surface); border: 1px solid var(--line); border-radius: 4px;
+    padding: 22px 22px 20px; transition: transform .14s ease, border-color .16s, box-shadow .18s;
+  }
+  .mod:hover { transform: translateY(-3px); border-color: var(--emerald); box-shadow: var(--shadow); }
+  .mod-top { display: flex; align-items: center; gap: 13px; margin-bottom: 15px; }
+  .mod-ico { width: 34px; height: 34px; flex: none; }
+  .mod h3 { font-family: var(--mono); font-size: 17px; font-weight: 700; margin: 0; letter-spacing: -0.01em; }
+  .badge {
+    font-family: var(--mono); font-size: 10.5px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase;
+    padding: 3px 8px; border-radius: 2px; border: 1px solid; margin-left: auto;
+  }
+  .badge.daemon { color: var(--copper); border-color: color-mix(in srgb, var(--copper) 55%, transparent); background: color-mix(in srgb, var(--copper) 12%, transparent); }
+  .badge.builtin { color: var(--emerald); border-color: color-mix(in srgb, var(--emerald) 55%, transparent); background: color-mix(in srgb, var(--emerald) 12%, transparent); }
+  .mod p { margin: 0 0 16px; color: var(--ink-dim); font-size: 14px; line-height: 1.55; flex: 1; }
+  .mod .path {
+    font-family: var(--mono); font-size: 12px; color: var(--ink-dim);
+    background: var(--bg); border: 1px solid var(--line); border-radius: 2px;
+    padding: 8px 10px; overflow-x: auto; white-space: nowrap;
+  }
+  .mod .path .k { color: var(--emerald); }
+  .mod-foot { display: flex; align-items: center; gap: 6px; margin-top: 14px; font-family: var(--mono); font-size: 13px; color: var(--emerald); }
+  .mod:hover .mod-foot .arw { transform: translateX(3px); }
+  .mod-foot .arw { transition: transform .15s; }
+  .mod.ghost { background: transparent; border-style: dashed; }
+  .mods-note { margin-top: 22px; font-size: 14px; color: var(--ink-faint); font-family: var(--mono); }
+  .mods-note a { color: var(--emerald); border-bottom: 1px solid transparent; }
+  .mods-note a:hover { border-color: var(--emerald); }
+
+  /* ---- getting started ---- */
+  .start-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center; }
+  .code {
+    background: var(--bg-2); border: 1px solid var(--line); border-radius: 4px; overflow: hidden;
+    box-shadow: var(--shadow);
+  }
+  .code .bar { display: flex; align-items: center; gap: 7px; padding: 11px 14px; border-bottom: 1px solid var(--line); }
+  .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--line-2); }
+  .code .bar span { font-family: var(--mono); font-size: 11px; color: var(--ink-faint); margin-left: 8px; }
+  .code pre { margin: 0; padding: 18px 18px; overflow-x: auto; }
+  .code code { font-family: var(--mono); font-size: 13px; line-height: 1.8; color: var(--ink); white-space: pre; }
+  .code .c { color: var(--ink-faint); }
+  .code .g { color: var(--emerald); }
+  .code .o { color: var(--copper); }
+  .start ul { list-style: none; padding: 0; margin: 22px 0 0; display: grid; gap: 12px; }
+  .start li { display: flex; gap: 12px; align-items: baseline; font-size: 15px; color: var(--ink-dim); }
+  .start li b { color: var(--ink); font-family: var(--mono); font-weight: 600; font-size: 13.5px; }
+  .start li .pin { color: var(--emerald); font-family: var(--mono); font-size: 12px; flex: none; }
+  .warn { margin-top: 24px; font-size: 13.5px; color: var(--ink-faint); border-left: 2px solid var(--copper); padding: 4px 0 4px 14px; }
+
+  /* ---- footer ---- */
+  footer { border-top: 1px solid var(--line); background: var(--bg-2); padding: 48px 0 34px; }
+  .foot-grid { display: grid; grid-template-columns: 1.4fr 1fr 1fr 1fr; gap: 30px; margin-bottom: 34px; }
+  .foot-brand .brand { margin-bottom: 12px; }
+  .foot-brand p { color: var(--ink-faint); font-size: 13.5px; max-width: 34ch; margin: 0; }
+  .foot-col h4 { font-family: var(--mono); font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-faint); margin: 0 0 12px; }
+  .foot-col a { display: block; color: var(--ink-dim); font-size: 14px; padding: 4px 0; transition: color .15s; }
+  .foot-col a:hover { color: var(--emerald); }
+  .foot-bottom { border-top: 1px solid var(--line); padding-top: 20px; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px; }
+  .foot-bottom p { margin: 0; font-size: 12.5px; color: var(--ink-faint); font-family: var(--mono); }
+  .disclaimer { max-width: 70ch; }
+
+  /* theme toggle */
+  .toggle {
+    border: 1px solid var(--line-2); background: var(--surface); color: var(--ink-dim);
+    width: 34px; height: 34px; border-radius: 2px; cursor: pointer; font-size: 15px;
+    display: inline-flex; align-items: center; justify-content: center; transition: border-color .15s, color .15s;
+  }
+  .toggle:hover { border-color: var(--emerald); color: var(--ink); }
+
+  :focus-visible { outline: 2px solid var(--emerald); outline-offset: 2px; }
+
+  /* reveal */
+  .reveal { opacity: 0; transform: translateY(14px); transition: opacity .6s ease, transform .6s ease; }
+  .reveal.in { opacity: 1; transform: none; }
+  @media (prefers-reduced-motion: reduce) { .reveal { opacity: 1; transform: none; transition: none; } }
+
+  @media (max-width: 860px) {
+    .hero-grid, .start-grid { grid-template-columns: 1fr; gap: 34px; }
+    .feat-grid, .mod-grid { grid-template-columns: 1fr; }
+    .foot-grid { grid-template-columns: 1fr 1fr; }
+    .nav-links a.hide-sm { display: none; }
+    .diagram { order: 2; }
+  }
+  @media (max-width: 520px) {
+    .foot-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<!-- ===================== NAV ===================== -->
+<header class="nav">
+  <div class="wrap nav-in">
+    <a class="brand" href="#top" aria-label="tachyne home">
+      <svg class="voxel" viewBox="0 0 24 24" aria-hidden="true">
+        <polygon points="12,1 22,6 12,11 2,6" fill="#4def9a"/>
+        <polygon points="2,6 12,11 12,23 2,18" fill="#1f9d63"/>
+        <polygon points="22,6 12,11 12,23 22,18" fill="#137a4a"/>
+        <polygon points="12,1 22,6 12,11 2,6" fill="none" stroke="#0b110e" stroke-width="0.6" opacity=".4"/>
+      </svg>
+      <span><b>tachyne</b></span>
+    </a>
+    <nav class="nav-links">
+      <a class="hide-sm" href="#modules">Modules</a>
+      <a class="hide-sm" href="#start">Get&nbsp;started</a>
+      <a href="https://github.com/tachyne/tachyne-world#what-to-expect-vanilla-parity-at-a-glance">Features</a>
+      <a href="https://github.com/tachyne">GitHub</a>
+      <a class="nav-cta" href="#start">Play&nbsp;→</a>
+      <button class="toggle" id="themeToggle" aria-label="Toggle theme" title="Toggle light / dark">◐</button>
+    </nav>
+  </div>
+</header>
+
+<a id="top"></a>
+<!-- ===================== HERO ===================== -->
+<div class="hero">
+  <div class="wrap hero-grid">
+    <div class="hero-copy">
+      <p class="eyebrow">A Minecraft server, from scratch in Go</p>
+      <h1>One world.<br><span class="accent">Every client.</span></h1>
+      <p class="lede">tachyne is a Minecraft-compatible server with a <b>versionless core</b>. The game is a database of simulation events; every version-specific concern lives at the edge. Java&nbsp;1.21.5–1.21.8, Java&nbsp;26.2, and Bedrock all join the <b>same world</b> — no client mods, no proxy bolted on after the fact.</p>
+      <div class="hero-cta">
+        <a class="btn btn-primary" href="#start">Run it in one command <span class="arw">→</span></a>
+        <a class="btn" href="https://github.com/tachyne">★ Star on GitHub</a>
+      </div>
+      <div class="facts">
+        <span class="fact"><b>Java</b> 1.21.5–1.21.8</span>
+        <span class="fact"><b>Java</b> 26.2</span>
+        <span class="fact"><b>Bedrock</b> latest</span>
+        <span class="fact"><b>Pure Go</b> · no JVM</span>
+        <span class="fact"><b>Apache-2.0</b></span>
+      </div>
+    </div>
+
+    <!-- architecture diagram: the thesis -->
+    <div class="diagram reveal">
+      <p class="cap"><span>architecture</span><span>domain events →</span></p>
+      <svg viewBox="0 0 360 300" role="img" aria-label="Clients connect to per-version gateways, which render domain events from one versionless engine.">
+        <!-- clients -->
+        <g>
+          <rect class="node-box" x="8"  y="8" width="104" height="40" rx="3"/>
+          <text class="node-t" x="60" y="27" text-anchor="middle">Java 1.21.5–.8</text>
+          <text class="node-s" x="60" y="40" text-anchor="middle">proto 770–772</text>
+
+          <rect class="node-box" x="128" y="8" width="104" height="40" rx="3"/>
+          <text class="node-t" x="180" y="27" text-anchor="middle">Java 26.2</text>
+          <text class="node-s" x="180" y="40" text-anchor="middle">proto 776</text>
+
+          <rect class="node-box" x="248" y="8" width="104" height="40" rx="3"/>
+          <text class="node-t" x="300" y="27" text-anchor="middle">Bedrock</text>
+          <text class="node-s" x="300" y="40" text-anchor="middle">RakNet / UDP</text>
+        </g>
+        <!-- edges clients -> gateways -->
+        <path class="edge" d="M60 48 L60 84"/>
+        <path class="edge" d="M180 48 L180 84"/>
+        <path class="edge" d="M300 48 L300 84"/>
+        <!-- gateways -->
+        <g>
+          <rect class="node-box" x="16" y="84" width="88" height="38" rx="3"/>
+          <text class="node-t" x="60" y="107" text-anchor="middle">gw-java-770</text>
+          <rect class="node-box" x="136" y="84" width="88" height="38" rx="3"/>
+          <text class="node-t" x="180" y="107" text-anchor="middle">gw-java-776</text>
+          <rect class="node-box" x="256" y="84" width="88" height="38" rx="3"/>
+          <text class="node-t" x="300" y="107" text-anchor="middle">gw-bedrock</text>
+        </g>
+        <text class="node-s" x="180" y="140" text-anchor="middle">render per version&nbsp;·&nbsp;translate wire</text>
+        <!-- flows gateways -> engine -->
+        <path class="flow" d="M60 122 C60 165, 180 150, 180 196"/>
+        <path class="flow" d="M180 122 L180 196"/>
+        <path class="flow" d="M300 122 C300 165, 180 150, 180 196"/>
+        <!-- engine -->
+        <rect class="node-engine" x="70" y="196" width="220" height="52" rx="4"/>
+        <circle class="pulse" cx="92" cy="222" r="5"/>
+        <text class="node-t" x="185" y="219" text-anchor="middle" style="font-size:13px">tachyne-world</text>
+        <text class="node-s" x="185" y="234" text-anchor="middle">ONE versionless engine · 20 TPS</text>
+        <text class="node-s" x="180" y="272" text-anchor="middle">canonical 1.21.11 · speaks no wire protocol</text>
+        <text class="node-s" x="180" y="288" text-anchor="middle" style="fill:var(--emerald)">a new version = a new gateway step — the engine never changes</text>
+      </svg>
+    </div>
+  </div>
+</div>
+
+<hr class="divider"/>
+
+<!-- ===================== FEATURES ===================== -->
+<section>
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <p class="eyebrow">Why it's different</p>
+      <h2>A versionless engine, not a patched-up proxy</h2>
+      <p>Cross-version support isn't bolted on — it's the shape of the system. The engine owns all game state and simulation; gateways at the edge turn typed events into whatever bytes a client speaks.</p>
+    </div>
+    <div class="feat-grid reveal">
+      <div class="feat">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="3" width="18" height="18" rx="1"/><path d="M3 9h18M9 3v18"/></svg>
+        <h3>One canonical world</h3>
+        <p>The engine targets a single canonical version and speaks only domain events. Clients spanning many versions read the same world through per-version renderers.</p>
+      </div>
+      <div class="feat">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 2 3 7v10l9 5 9-5V7z"/><path d="M12 22V12M3 7l9 5 9-5"/></svg>
+        <h3>Full survival, honestly</h3>
+        <p>Terrain, caves &amp; biomes, the complete mob roster, enchanting, brewing, anvils, villages, the Nether, and the End with the dragon. A published feature matrix tracks what's done.</p>
+      </div>
+      <div class="feat">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="7" cy="7" r="3"/><circle cx="17" cy="17" r="3"/><path d="M7 10v4a3 3 0 0 0 3 3h4M17 14v-4a3 3 0 0 0-3-3h-4"/></svg>
+        <h3>Java &amp; Bedrock, one server</h3>
+        <p>An ingress routes each client to the right gateway by protocol. Java and Bedrock players share the same blocks, mobs, and chat — with no client mods.</p>
+      </div>
+      <div class="feat">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 2v4M12 18v4M2 12h4M18 12h4M5 5l3 3M16 16l3 3M19 5l-3 3M8 16l-3 3"/><circle cx="12" cy="12" r="3"/></svg>
+        <h3>Redstone that behaves</h3>
+        <p>Tiers 1–2 with vanilla timing: pistons, comparators, observers, the auto-crafter, target blocks, and quirks like quasi-connectivity and the dispenser's 4-tick delay.</p>
+      </div>
+      <div class="feat">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 7h16M4 12h16M4 17h10"/><rect x="2" y="3" width="20" height="18" rx="2"/></svg>
+        <h3>Extend it in Go</h3>
+        <p>A compiled-in plugin API with Bukkit-shaped events, an out-of-process message bus, a registry, and a manager that installs plugins by module path while the server runs.</p>
+      </div>
+      <div class="feat">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 2 2 7l10 5 10-5z"/><path d="M2 12l10 5 10-5M2 17l10 5 10-5"/></svg>
+        <h3>Cluster-native</h3>
+        <p>Ships as container images built on every push, runs on Kubernetes, and scales at the edge — or comes up locally with a single Docker command.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== MODULES ===================== -->
+<section class="mods-band" id="modules">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <p class="eyebrow">Modules</p>
+      <h2>Bolt on what you need</h2>
+      <p>A module is an ordinary git repo installed by its module path — the go-get model applied to a running server. The registry <b>indexes, it never hosts</b>: code always flows git → you. Here's the curated first-party set.</p>
+    </div>
+
+    <div class="mod-grid reveal">
+      <!-- webmap -->
+      <div class="mod">
+        <div class="mod-top">
+          <svg class="mod-ico" viewBox="0 0 32 32" aria-hidden="true"><rect x="2" y="2" width="28" height="28" rx="3" fill="#182420" stroke="#26332d"/><path d="M8 24 L14 8 L18 18 L22 12 L26 24 Z" fill="none" stroke="#34d98a" stroke-width="1.6"/><circle cx="14" cy="8" r="2" fill="#34d98a"/></svg>
+          <h3>webmap</h3>
+          <span class="badge daemon">daemon</span>
+        </div>
+        <p>A live 2D web map of the running world — players in real time, mobs, weather, and the in-game clock, streamed off the message bus.</p>
+        <div class="path"><span class="k">run</span> …/tachyne-world/daemons/webmap</div>
+        <a class="mod-foot" href="https://github.com/tachyne/tachyne-world/tree/main/daemons/webmap">View source <span class="arw">→</span></a>
+      </div>
+
+      <!-- bluemap -->
+      <div class="mod">
+        <div class="mod-top">
+          <svg class="mod-ico" viewBox="0 0 32 32" aria-hidden="true"><rect x="2" y="2" width="28" height="28" rx="3" fill="#182420" stroke="#26332d"/><polygon points="16,6 26,12 16,18 6,12" fill="#34d98a" opacity=".9"/><polygon points="6,12 16,18 16,27 6,21" fill="#1f9d63"/><polygon points="26,12 16,18 16,27 26,21" fill="#137a4a"/></svg>
+          <h3>bluemap</h3>
+          <span class="badge daemon">daemon</span>
+        </div>
+        <p>A full 3D web map via BlueMap: exports the world to the vanilla format on a timer, supervises the renderer and webserver, and drops in live player markers.</p>
+        <div class="path"><span class="k">run</span> …/tachyne-world/daemons/bluemap</div>
+        <a class="mod-foot" href="https://github.com/tachyne/tachyne-world/tree/main/daemons/bluemap">View source <span class="arw">→</span></a>
+      </div>
+
+      <!-- build your own -->
+      <div class="mod ghost">
+        <div class="mod-top">
+          <svg class="mod-ico" viewBox="0 0 32 32" aria-hidden="true"><rect x="2" y="2" width="28" height="28" rx="3" fill="none" stroke="#324139" stroke-dasharray="3 3"/><path d="M16 10 V22 M10 16 H22" stroke="#d1874e" stroke-width="2" stroke-linecap="square"/></svg>
+          <h3>Build your own</h3>
+          <span class="badge builtin">plugin&nbsp;api</span>
+        </div>
+        <p>Compile a plugin into the engine with a Bukkit-shaped Go API, or run one out-of-process on the bus. List it in the registry with a <span style="font-family:var(--mono);font-size:12px">tachyne-plugin.json</span>.</p>
+        <div class="path"><span class="k">import</span> tachyne-world/plugin</div>
+        <a class="mod-foot" href="https://github.com/tachyne/tachyne-world/blob/main/docs/PLUGINS.md">Read the plugin docs <span class="arw">→</span></a>
+      </div>
+    </div>
+    <p class="mods-note reveal">// Built a module? <a href="https://github.com/tachyne/tachyne-registry">List it in the registry →</a></p>
+  </div>
+</section>
+
+<!-- ===================== GET STARTED ===================== -->
+<section id="start">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <p class="eyebrow">Get started</p>
+      <h2>Playable in one command</h2>
+      <p>The quickstart ships a Docker Compose stack and Kubernetes manifests. Classic infinite survival by default — or walk a true-scale, real-elevation Cape Town.</p>
+    </div>
+    <div class="start-grid start">
+      <div class="code reveal">
+        <div class="bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span>terminal</span></div>
+        <pre><code><span class="c"># clone the quickstart, then bring it up</span>
+git clone https://github.com/tachyne/tachyne
+cd tachyne
+
+<span class="c"># one container, procedurally generated, full survival</span>
+<span class="o">TACHYNE_OPS</span>=YourName docker compose up <span class="g">-d</span>
+
+<span class="c"># now connect a client ↓</span></code></pre>
+      </div>
+      <div class="reveal">
+        <ul>
+          <li><span class="pin">▸</span><span><b>Java</b> — point 1.21.5–1.21.8 or 26.2 at <b>&lt;host&gt;:25565</b></span></li>
+          <li><span class="pin">▸</span><span><b>Bedrock</b> — point the latest client at <b>&lt;host&gt;:19132</b></span></li>
+          <li><span class="pin">▸</span><span>No whitelist, offline-mode by default — perfect for a LAN</span></li>
+          <li><span class="pin">▸</span><span>Add <b>tachyne-access</b> for real whitelist / ban / IP policy</span></li>
+        </ul>
+        <p class="warn">A fresh server is open by default (anyone can join under any name). Don't expose it to the internet as-is — see the quickstart's security note.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== FOOTER ===================== -->
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <a class="brand" href="#top">
+          <svg class="voxel" viewBox="0 0 24 24" aria-hidden="true">
+            <polygon points="12,1 22,6 12,11 2,6" fill="#4def9a"/>
+            <polygon points="2,6 12,11 12,23 2,18" fill="#1f9d63"/>
+            <polygon points="22,6 12,11 12,23 22,18" fill="#137a4a"/>
+          </svg>
+          <span><b>tachyne</b></span>
+        </a>
+        <p>A Minecraft-compatible server, written from scratch in pure Go — with a versionless core.</p>
+      </div>
+      <div class="foot-col">
+        <h4>Project</h4>
+        <a href="https://github.com/tachyne/tachyne-world">Engine (tachyne-world)</a>
+        <a href="https://github.com/tachyne/tachyne">Quickstart</a>
+        <a href="https://github.com/tachyne/tachyne-world#what-to-expect-vanilla-parity-at-a-glance">Feature matrix</a>
+        <a href="https://github.com/tachyne">GitHub org</a>
+      </div>
+      <div class="foot-col">
+        <h4>Modules</h4>
+        <a href="https://github.com/tachyne/tachyne-world/tree/main/daemons/webmap">webmap</a>
+        <a href="https://github.com/tachyne/tachyne-world/tree/main/daemons/bluemap">bluemap</a>
+        <a href="https://github.com/tachyne/tachyne-registry">Registry</a>
+        <a href="https://github.com/tachyne/tachyne-world/blob/main/docs/PLUGINS.md">Plugin docs</a>
+      </div>
+      <div class="foot-col">
+        <h4>Edge</h4>
+        <a href="https://github.com/tachyne/tachyne-ingress">Ingress</a>
+        <a href="https://github.com/tachyne/tachyne-access">Access</a>
+        <a href="https://github.com/tachyne/tachyne-gw-bedrock">Bedrock gateway</a>
+        <a href="https://github.com/tachyne/tachyne-common">Wire library</a>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <p class="disclaimer">tachyne is an unofficial fan project — not affiliated with Mojang, Microsoft, or Minecraft's developer/publisher in any way. Apache-2.0.</p>
+      <p>© 2026 tachyne</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+  (function () {
+    // theme toggle: stamp data-theme, flip on click
+    var root = document.documentElement, btn = document.getElementById('themeToggle');
+    btn.addEventListener('click', function () {
+      var cur = root.getAttribute('data-theme');
+      if (!cur) cur = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      root.setAttribute('data-theme', cur === 'dark' ? 'light' : 'dark');
+    });
+    // scroll reveal
+    var io = new IntersectionObserver(function (es) {
+      es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+    }, { threshold: 0.12 });
+    document.querySelectorAll('.reveal').forEach(function (el) { io.observe(el); });
+  })();
+</script>
+
+</body>
+</html>
