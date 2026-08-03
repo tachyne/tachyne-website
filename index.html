@@ -271,6 +271,7 @@
     padding: 3px 8px; border-radius: 2px; border: 1px solid; margin-left: auto;
   }
   .badge.daemon { color: var(--copper); border-color: color-mix(in srgb, var(--copper) 55%, transparent); background: color-mix(in srgb, var(--copper) 12%, transparent); }
+  .badge.service { color: var(--emerald); border-color: color-mix(in srgb, var(--emerald) 55%, transparent); background: color-mix(in srgb, var(--emerald) 12%, transparent); }
   .badge.builtin { color: var(--emerald); border-color: color-mix(in srgb, var(--emerald) 55%, transparent); background: color-mix(in srgb, var(--emerald) 12%, transparent); }
   .mod p { margin: 0 0 16px; color: var(--ink-dim); font-size: 14px; line-height: 1.55; flex: 1; }
   .mod .path {
@@ -465,7 +466,7 @@
       <div class="feat">
         <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 2 3 7v10l9 5 9-5V7z"/><path d="M12 22V12M3 7l9 5 9-5"/></svg>
         <h3>Full survival, honestly</h3>
-        <p>Terrain, caves &amp; biomes, the complete mob roster, enchanting, brewing, anvils, villages, the Nether, and the End with the dragon. A published feature matrix tracks what's done.</p>
+        <p>Terrain grown by ports of vanilla's own generators — trees, huge mushrooms, bee nests and their bees — plus the complete mob roster, enchanting, brewing, anvils, villages, the Nether, and the End with the dragon. A published feature matrix tracks what's done.</p>
       </div>
       <div class="feat">
         <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="7" cy="7" r="3"/><circle cx="17" cy="17" r="3"/><path d="M7 10v4a3 3 0 0 0 3 3h4M17 14v-4a3 3 0 0 0-3-3h-4"/></svg>
@@ -501,28 +502,28 @@
     </div>
 
     <div class="mod-grid reveal">
-      <!-- webmap -->
-      <div class="mod">
-        <div class="mod-top">
-          <svg class="mod-ico" viewBox="0 0 32 32" aria-hidden="true"><rect x="2" y="2" width="28" height="28" rx="3" fill="#182420" stroke="#26332d"/><path d="M8 24 L14 8 L18 18 L22 12 L26 24 Z" fill="none" stroke="#34d98a" stroke-width="1.6"/><circle cx="14" cy="8" r="2" fill="#34d98a"/></svg>
-          <h3>webmap</h3>
-          <span class="badge daemon">daemon</span>
-        </div>
-        <p>A live 2D web map of the running world — players in real time, mobs, weather, and the in-game clock, streamed off the message bus.</p>
-        <div class="path"><span class="k">run</span> …/tachyne-world/daemons/webmap</div>
-        <a class="mod-foot" href="https://github.com/tachyne/tachyne-world/tree/main/daemons/webmap">View source <span class="arw">→</span></a>
-      </div>
-
-      <!-- bluemap -->
+      <!-- tachyne-map -->
       <div class="mod">
         <div class="mod-top">
           <svg class="mod-ico" viewBox="0 0 32 32" aria-hidden="true"><rect x="2" y="2" width="28" height="28" rx="3" fill="#182420" stroke="#26332d"/><polygon points="16,6 26,12 16,18 6,12" fill="#34d98a" opacity=".9"/><polygon points="6,12 16,18 16,27 6,21" fill="#1f9d63"/><polygon points="26,12 16,18 16,27 26,21" fill="#137a4a"/></svg>
-          <h3>bluemap</h3>
+          <h3>tachyne-map</h3>
+          <span class="badge service">service</span>
+        </div>
+        <p>A native-Go 3D web map with its own tile format and a streaming viewer — no Java, no world export. It renders straight off the engine's world data and keeps up as the world changes.</p>
+        <div class="path"><span class="k">deploy</span> github.com/tachyne/tachyne-map</div>
+        <a class="mod-foot" href="https://github.com/tachyne/tachyne-map">View source <span class="arw">→</span></a>
+      </div>
+
+      <!-- plugin manager -->
+      <div class="mod">
+        <div class="mod-top">
+          <svg class="mod-ico" viewBox="0 0 32 32" aria-hidden="true"><rect x="2" y="2" width="28" height="28" rx="3" fill="#182420" stroke="#26332d"/><path d="M8 24 L14 8 L18 18 L22 12 L26 24 Z" fill="none" stroke="#34d98a" stroke-width="1.6"/><circle cx="14" cy="8" r="2" fill="#34d98a"/></svg>
+          <h3>plugin-manager</h3>
           <span class="badge daemon">daemon</span>
         </div>
-        <p>A full 3D web map via BlueMap: exports the world to the vanilla format on a timer, supervises the renderer and webserver, and drops in live player markers.</p>
-        <div class="path"><span class="k">run</span> …/tachyne-world/daemons/bluemap</div>
-        <a class="mod-foot" href="https://github.com/tachyne/tachyne-world/tree/main/daemons/bluemap">View source <span class="arw">→</span></a>
+        <p>Pulls, builds, boots and supervises out-of-process plugins while the server runs — the control plane behind <span style="font-family:var(--mono);font-size:12px">/plugin</span>, with progressive fleet-wide upgrades off the registry.</p>
+        <div class="path"><span class="k">run</span> github.com/tachyne/tachyne-plugin-manager</div>
+        <a class="mod-foot" href="https://github.com/tachyne/tachyne-plugin-manager">View source <span class="arw">→</span></a>
       </div>
 
       <!-- build your own -->
@@ -598,8 +599,8 @@ cd tachyne
       </div>
       <div class="foot-col">
         <h4>Modules</h4>
-        <a href="https://github.com/tachyne/tachyne-world/tree/main/daemons/webmap">webmap</a>
-        <a href="https://github.com/tachyne/tachyne-world/tree/main/daemons/bluemap">bluemap</a>
+        <a href="https://github.com/tachyne/tachyne-map">tachyne-map</a>
+        <a href="https://github.com/tachyne/tachyne-plugin-manager">Plugin manager</a>
         <a href="https://github.com/tachyne/tachyne-registry">Registry</a>
         <a href="https://github.com/tachyne/tachyne-world/blob/main/docs/PLUGINS.md">Plugin docs</a>
       </div>
