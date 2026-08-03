@@ -294,6 +294,50 @@
   .shot-note { margin-top: 14px; text-align: center; font-family: var(--mono); font-size: 13px; color: var(--ink-faint); }
   .shot-note a { color: var(--emerald); }
 
+  /* ---- feature matrix wall ---- */
+  .tally { display: flex; flex-wrap: wrap; gap: 18px; margin: 0 0 22px; font-family: var(--mono); font-size: 13px; }
+  .tally span { display: inline-flex; align-items: center; gap: 7px; color: var(--ink-dim); }
+  .dot-s { width: 9px; height: 9px; border-radius: 2px; flex: none; }
+  .d-done { background: var(--emerald); }
+  .d-wip  { background: var(--copper); }
+  .d-none { background: var(--line-2); }
+  .mx-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px 26px; }
+  .mx-col h4 {
+    font-family: var(--mono); font-size: 11.5px; letter-spacing: .08em; text-transform: uppercase;
+    color: var(--ink-faint); margin: 0 0 10px; padding-bottom: 8px; border-bottom: 1px solid var(--line);
+  }
+  .mx-col h4:not(:first-child) { margin-top: 20px; }
+  .mx-col ul { list-style: none; margin: 0; padding: 0; }
+  .mx-col li {
+    display: flex; align-items: center; gap: 9px; padding: 6px 0;
+    font-size: 13.5px; color: var(--ink-dim); border-bottom: 1px solid color-mix(in srgb, var(--line) 45%, transparent);
+  }
+  .mx-col li:last-child { border-bottom: none; }
+  @media (max-width: 1000px) { .mx-grid { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 620px) { .mx-grid { grid-template-columns: 1fr; gap: 18px; } }
+
+  /* ---- comparison ---- */
+  .cmp { border: 1px solid var(--line); border-radius: 4px; overflow: hidden; background: var(--surface); }
+  .cmp-row { display: grid; grid-template-columns: 168px 1fr 1fr; border-top: 1px solid var(--line); }
+  .cmp-row:first-child { border-top: none; }
+  .cmp-row > * { padding: 14px 18px; font-size: 13.5px; line-height: 1.55; }
+  .cmp-head { background: var(--bg-2); font-family: var(--mono); font-size: 11.5px; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-faint); }
+  .cmp-head .us { color: var(--emerald); }
+  .cmp-k { font-weight: 650; color: var(--ink); }
+  .cmp-a { color: var(--ink-faint); border-left: 1px solid var(--line); }
+  .cmp-b { color: var(--ink-dim); border-left: 1px solid var(--line); background: color-mix(in srgb, var(--emerald) 4%, transparent); }
+  .cmp-note { margin-top: 18px; font-size: 14px; color: var(--ink-dim); line-height: 1.65; }
+  .cmp-note b { color: var(--ink); }
+  @media (max-width: 800px) {
+    .cmp-row { grid-template-columns: 1fr; }
+    .cmp-row > * { padding: 10px 16px; }
+    .cmp-a, .cmp-b { border-left: none; }
+    .cmp-k { background: var(--bg-2); padding-top: 14px; }
+    .cmp-a::before { content: "conventional — "; color: var(--ink-faint); font-family: var(--mono); font-size: 11px; }
+    .cmp-b::before { content: "tachyne — "; color: var(--emerald); font-family: var(--mono); font-size: 11px; }
+    .cmp-head { display: none; }
+  }
+
   /* ---- the parts (repo map) ---- */
   .repo-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 22px; }
   .repo {
@@ -445,7 +489,7 @@
       <a class="hide-sm" href="#worlds">Worlds</a>
       <a class="hide-sm" href="#modules">Modules</a>
       <a class="hide-sm" href="#start">Get&nbsp;started</a>
-      <a class="hide-xs" href="https://github.com/tachyne/tachyne-world#what-to-expect-vanilla-parity-at-a-glance">Features</a>
+      <a class="hide-xs" href="#features">Features</a>
       <a class="hide-xs" href="https://github.com/tachyne">GitHub</a>
       <a class="nav-cta" href="#start">Play&nbsp;→</a>
       <button class="toggle" id="themeToggle" aria-label="Toggle theme" title="Toggle light / dark">◐</button>
@@ -630,8 +674,8 @@
         </div>
         <div class="slide" role="tabpanel" id="sl-5" aria-labelledby="tb-5" hidden>
           <h3>A world that keeps happening</h3>
-          <p>Phantoms haunt sleepless nights, an ominous banner starts a real raid, villagers restock and trade by profession, mobs spawn by vanilla's caps and light rules, and the world border closes in when you ask it to. Log off; the world is still there in the morning — hive occupants included.</p>
-          <p class="proof">// feature matrix: <a href="https://github.com/tachyne/tachyne-world#what-to-expect-vanilla-parity-at-a-glance">Raids ✅ · Survival loop ✅</a></p>
+          <p>Phantoms haunt sleepless nights, killing a patrol captain leaves you carrying Bad Omen — walk it into a village and the raid horn sounds, waves and all. Villagers restock and trade by profession, mobs spawn by vanilla's caps and light rules, and the world border closes in when you ask it to. Log off; the world is still there in the morning — hive occupants included.</p>
+          <p class="proof">// feature matrix: <a href="https://github.com/tachyne/tachyne-world#what-to-expect-vanilla-parity-at-a-glance">Survival loop ✅ · Raids 🟡</a></p>
         </div>
       </div>
     </div>
@@ -728,6 +772,139 @@
         <a class="mod-foot" href="https://github.com/tachyne/tachyne-world/blob/main/docs/SHARDING.md">The sharding design <span class="arw">→</span></a>
       </div>
     </div>
+  </div>
+</section>
+
+<!-- ===================== FEATURE BREAKDOWN ===================== -->
+<section id="features">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <p class="eyebrow">Feature breakdown</p>
+      <h2>38 areas, graded in public</h2>
+      <p>Parity is tracked area by area and published as it stands — complete, in progress, or not started. Nothing here is aspirational; the <a href="https://github.com/tachyne/tachyne-world#what-to-expect-vanilla-parity-at-a-glance">full matrix</a> spells out exactly what each status means, down to the caveats.</p>
+    </div>
+    <div class="tally reveal">
+      <span><i class="dot-s d-done"></i><b>27</b>&nbsp;complete</span>
+      <span><i class="dot-s d-wip"></i><b>10</b>&nbsp;in progress, playable</span>
+      <span><i class="dot-s d-none"></i><b>1</b>&nbsp;not started</span>
+    </div>
+    <div class="mx-grid reveal">
+      <div class="mx-col">
+        <h4>World &amp; terrain</h4>
+        <ul>
+          <li><span class="dot-s d-done"></span>Terrain, biomes, caves, lighting</li>
+          <li><span class="dot-s d-wip"></span>Structures</li>
+          <li><span class="dot-s d-wip"></span>Growth</li>
+          <li><span class="dot-s d-done"></span>Fluids</li>
+          <li><span class="dot-s d-done"></span>Explosions &amp; sponges</li>
+          <li><span class="dot-s d-wip"></span>The Nether / The End</li>
+          <li><span class="dot-s d-done"></span>Trial chambers</li>
+          <li><span class="dot-s d-done"></span>World border</li>
+        </ul>
+      </div>
+      <div class="mx-col">
+        <h4>Play &amp; creatures</h4>
+        <ul>
+          <li><span class="dot-s d-done"></span>Mobs</li>
+          <li><span class="dot-s d-done"></span>Combat</li>
+          <li><span class="dot-s d-done"></span>PvP</li>
+          <li><span class="dot-s d-done"></span>Survival loop</li>
+          <li><span class="dot-s d-wip"></span>Villages &amp; trading</li>
+          <li><span class="dot-s d-wip"></span>Raids</li>
+          <li><span class="dot-s d-done"></span>Fishing</li>
+          <li><span class="dot-s d-wip"></span>Vehicles</li>
+          <li><span class="dot-s d-done"></span>Mount inventories</li>
+        </ul>
+      </div>
+      <div class="mx-col">
+        <h4>Blocks &amp; machines</h4>
+        <ul>
+          <li><span class="dot-s d-done"></span>Mining, crafting, smelting</li>
+          <li><span class="dot-s d-wip"></span>Enchanting / anvil / brewing</li>
+          <li><span class="dot-s d-wip"></span>Redstone</li>
+          <li><span class="dot-s d-wip"></span>Block support</li>
+          <li><span class="dot-s d-done"></span>Loom &amp; banners</li>
+          <li><span class="dot-s d-done"></span>Smithing table</li>
+          <li><span class="dot-s d-done"></span>Beacon</li>
+          <li><span class="dot-s d-done"></span>Note blocks &amp; jukebox</li>
+          <li><span class="dot-s d-done"></span>Signs</li>
+        </ul>
+      </div>
+      <div class="mx-col">
+        <h4>Progression &amp; UI</h4>
+        <ul>
+          <li><span class="dot-s d-done"></span>Advancements</li>
+          <li><span class="dot-s d-done"></span>Statistics</li>
+          <li><span class="dot-s d-done"></span>Scoreboard &amp; teams</li>
+          <li><span class="dot-s d-done"></span>Filled maps</li>
+          <li><span class="dot-s d-done"></span>Locator bar</li>
+          <li><span class="dot-s d-done"></span>Books, lectern, bookshelf</li>
+          <li><span class="dot-s d-done"></span>Item frames</li>
+          <li><span class="dot-s d-done"></span>Paintings</li>
+          <li><span class="dot-s d-done"></span>Armor stands</li>
+        </ul>
+        <h4>Server &amp; ops</h4>
+        <ul>
+          <li><span class="dot-s d-done"></span>Plugins</li>
+          <li><span class="dot-s d-wip"></span>Commands &amp; gamerules</li>
+          <li><span class="dot-s d-none"></span>Online-mode auth / chat signing</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== COMPARISON ===================== -->
+<section class="mods-band" id="compare">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <p class="eyebrow">How it compares</p>
+      <h2>A different point in the design space</h2>
+      <p>tachyne isn't a faster Paper. It trades a mature ecosystem for an architecture built around multi-version support and horizontal scale — here's the honest trade.</p>
+    </div>
+    <div class="cmp reveal">
+      <div class="cmp-row">
+        <div class="cmp-head"></div>
+        <div class="cmp-head">Conventional Java server</div>
+        <div class="cmp-head us">tachyne</div>
+      </div>
+      <div class="cmp-row">
+        <div class="cmp-k">Process model</div>
+        <div class="cmp-a">One monolithic JVM process</div>
+        <div class="cmp-b">Distributed pods: engine, per-version gateways, ingress, authz</div>
+      </div>
+      <div class="cmp-row">
+        <div class="cmp-k">Multi-version</div>
+        <div class="cmp-a">Proxy or plugin layers bolted on</div>
+        <div class="cmp-b">Native: a versionless engine plus per-version render gateways</div>
+      </div>
+      <div class="cmp-row">
+        <div class="cmp-k">Concurrency</div>
+        <div class="cmp-a">One main game thread; plugins compete for it</div>
+        <div class="cmp-b">A goroutine per connection; simulation isolated per world pod</div>
+      </div>
+      <div class="cmp-row">
+        <div class="cmp-k">Scaling</div>
+        <div class="cmp-a">Vertical only — a bigger machine</div>
+        <div class="cmp-b">Horizontal: the front tier replicates freely today; world sharding is prototyped (single-pod in production for now)</div>
+      </div>
+      <div class="cmp-row">
+        <div class="cmp-k">Footprint</div>
+        <div class="cmp-a">JVM heap, GC tuning, warmup</div>
+        <div class="cmp-b">Small static Go binaries; containers measured in tens of MB</div>
+      </div>
+      <div class="cmp-row">
+        <div class="cmp-k">Gameplay</div>
+        <div class="cmp-a">Complete vanilla</div>
+        <div class="cmp-b">Vanilla parity in progress — 27 of 38 areas complete, graded above</div>
+      </div>
+      <div class="cmp-row">
+        <div class="cmp-k">Ecosystem</div>
+        <div class="cmp-a">Massive, mature plugin ecosystem</div>
+        <div class="cmp-b">Young, but the plumbing is complete: a Bukkit-shaped Go API, an event bus, a registry, and fleet-wide rollouts</div>
+      </div>
+    </div>
+    <p class="cmp-note reveal">Pick a conventional server if you want <b>the complete game and its ecosystem today</b>. Pick tachyne if you want a <b>multi-version, cloud-native world</b> built to scale horizontally — and can live with the matrix as it stands. Measured so far: <b>~150 concurrent sessions</b> on a single node. We publish what we've measured, not what we hope.</p>
   </div>
 </section>
 
