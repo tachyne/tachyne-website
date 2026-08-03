@@ -288,6 +288,30 @@
   .mods-note a { color: var(--emerald); border-bottom: 1px solid transparent; }
   .mods-note a:hover { border-color: var(--emerald); }
 
+  /* ---- live map shot ---- */
+  .shot { max-width: 1060px; margin: 0 auto; }
+  .shot .code img { display: block; width: 100%; height: auto; }
+  .shot-note { margin-top: 14px; text-align: center; font-family: var(--mono); font-size: 13px; color: var(--ink-faint); }
+  .shot-note a { color: var(--emerald); }
+
+  /* ---- the parts (repo map) ---- */
+  .repo-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 22px; }
+  .repo {
+    display: grid; grid-template-columns: 172px 1fr auto; gap: 14px; align-items: baseline;
+    padding: 12px 14px; border: 1px solid var(--line); border-radius: 3px; background: var(--surface);
+    transition: border-color .15s, transform .12s;
+  }
+  .repo:hover { border-color: var(--emerald); transform: translateX(3px); }
+  .repo .rn { font-family: var(--mono); font-size: 13px; font-weight: 700; color: var(--emerald); white-space: nowrap; }
+  .repo .rd { font-size: 13.5px; color: var(--ink-dim); line-height: 1.5; }
+  .repo .arw { font-family: var(--mono); color: var(--ink-faint); }
+  .repo:hover .arw { color: var(--emerald); }
+  @media (max-width: 900px) {
+    .repo-grid { grid-template-columns: 1fr; }
+    .repo { grid-template-columns: 1fr auto; }
+    .repo .rn { grid-column: 1 / -1; }
+  }
+
   /* ---- parity showcase (rotating / swappable) ---- */
   .show { display: grid; grid-template-columns: 280px 1fr; gap: 22px; align-items: stretch; }
   .show-tabs { display: flex; flex-direction: column; gap: 6px; }
@@ -543,6 +567,24 @@
   </div>
 </section>
 
+<!-- ===================== LIVE MAP ===================== -->
+<section class="mods-band">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <p class="eyebrow">Seeing is believing</p>
+      <h2>The world, live in a browser</h2>
+      <p>This is <a href="https://github.com/tachyne/tachyne-map">tachyne-map</a> rendering a real running world — tiles meshed in Go on the server, streamed into a WebGL viewer as you fly. No Java renderer, no world export, and it keeps up as players build.</p>
+    </div>
+    <div class="shot reveal">
+      <div class="code">
+        <div class="bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span>tachyne-map — live viewer</span></div>
+        <img src="map.png" width="1600" height="1000" loading="lazy" alt="The tachyne-map 3D viewer showing a live world: a player-built castle with twin spires above formal gardens and farm plots, a beach and ocean to the west, forest to the east and snow-capped peaks behind — with the viewer's HUD reporting resident tiles, streaming radius and live mob counts.">
+      </div>
+      <p class="shot-note">// a real capture of the live viewer — spawn castle, streaming HUD and all. <a href="https://github.com/tachyne/tachyne-map">Run one against your world →</a></p>
+    </div>
+  </div>
+</section>
+
 <!-- ===================== PARITY ===================== -->
 <section>
   <div class="wrap">
@@ -689,6 +731,30 @@
   </div>
 </section>
 
+<!-- ===================== THE PARTS ===================== -->
+<section class="mods-band" id="parts">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <p class="eyebrow">The parts</p>
+      <h2>Eleven small repos, one system</h2>
+      <p>Each piece deploys on its own and does one job; the wire format lives in a single shared library, so a new Minecraft version is a translation step at the edge — never an engine change.</p>
+    </div>
+    <div class="repo-grid reveal">
+      <a class="repo" href="https://github.com/tachyne/tachyne-world"><span class="rn">tachyne-world</span><span class="rd">The engine: all simulation and worldgen, speaking only domain events — plus sharding and earth mode</span><span class="arw">→</span></a>
+      <a class="repo" href="https://github.com/tachyne/tachyne-common"><span class="rn">tachyne-common</span><span class="rd">The shared wire library: attach protocol, canonical renderer, and the multi-version translation chain</span><span class="arw">→</span></a>
+      <a class="repo" href="https://github.com/tachyne/tachyne-gw-java-770"><span class="rn">tachyne-gw-java-770</span><span class="rd">Java gateway for 1.21.5–1.21.8 (protocols 770–772)</span><span class="arw">→</span></a>
+      <a class="repo" href="https://github.com/tachyne/tachyne-gw-java-776"><span class="rn">tachyne-gw-java-776</span><span class="rd">Java gateway for 26.2 (protocol 776), running the full translation chain</span><span class="arw">→</span></a>
+      <a class="repo" href="https://github.com/tachyne/tachyne-gw-bedrock"><span class="rn">tachyne-gw-bedrock</span><span class="rd">Bedrock gateway over RakNet, tracking the latest Bedrock release</span><span class="arw">→</span></a>
+      <a class="repo" href="https://github.com/tachyne/tachyne-ingress"><span class="rn">tachyne-ingress</span><span class="rd">The single front door: routes Java clients by protocol version, forwards Bedrock UDP</span><span class="arw">→</span></a>
+      <a class="repo" href="https://github.com/tachyne/tachyne-access"><span class="rn">tachyne-access</span><span class="rd">Authorization: whitelist, bans, roles and an ordered IP ACL, Postgres-backed</span><span class="arw">→</span></a>
+      <a class="repo" href="https://github.com/tachyne/tachyne-map"><span class="rn">tachyne-map</span><span class="rd">The native-Go 3D web map pictured above — own tile format, streaming viewer</span><span class="arw">→</span></a>
+      <a class="repo" href="https://github.com/tachyne/tachyne-plugin-manager"><span class="rn">tachyne-plugin-manager</span><span class="rd">Pulls, builds, boots and supervises daemon plugins — the control plane behind /plugin</span><span class="arw">→</span></a>
+      <a class="repo" href="https://github.com/tachyne/tachyne-registry"><span class="rn">tachyne-registry</span><span class="rd">Plugin discovery over git-hosted modules: search, versions, installs — it indexes, never hosts</span><span class="arw">→</span></a>
+      <a class="repo" href="https://github.com/tachyne/tachyne"><span class="rn">tachyne (quickstart)</span><span class="rd">Run the whole stack in one command: Docker Compose or Kubernetes, classic or earth mode</span><span class="arw">→</span></a>
+    </div>
+  </div>
+</section>
+
 <!-- ===================== GET STARTED ===================== -->
 <section id="start">
   <div class="wrap">
@@ -746,6 +812,7 @@ cd tachyne
         <a href="https://github.com/tachyne/tachyne">Quickstart</a>
         <a href="https://github.com/tachyne/tachyne-world#what-to-expect-vanilla-parity-at-a-glance">Feature matrix</a>
         <a href="https://github.com/tachyne/tachyne-world/blob/main/CHANGELOG.md">Changelog</a>
+        <a href="#parts">All eleven repos</a>
         <a href="https://github.com/tachyne">GitHub org</a>
       </div>
       <div class="foot-col">
