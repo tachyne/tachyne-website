@@ -3,10 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="A Minecraft-compatible server, written from scratch in pure Go, with a versionless core. Java 1.21.5–1.21.8, Java 26.2, and Bedrock join one world.">
+<meta name="description" content="A Minecraft-compatible server, written from scratch in pure Go, with a versionless core. Java 1.21.5–1.21.8, Java 26.2, and Bedrock join one world — with vanilla-faithful mechanics, real-Earth terrain, and LLM-driven villagers.">
 <meta property="og:type" content="website">
 <meta property="og:title" content="tachyne — one world, every client">
-<meta property="og:description" content="A Minecraft-compatible server, written from scratch in pure Go, with a versionless core. Java 1.21.5–1.21.8, Java 26.2, and Bedrock join one world.">
+<meta property="og:description" content="A Minecraft-compatible server, written from scratch in pure Go, with a versionless core. Java 1.21.5–1.21.8, Java 26.2, and Bedrock join one world — with vanilla-faithful mechanics, real-Earth terrain, and LLM-driven villagers.">
 <meta property="og:url" content="https://tachyne.com">
 <meta property="og:site_name" content="tachyne">
 <meta property="og:image" content="https://tachyne.com/og.png">
@@ -288,6 +288,20 @@
   .mods-note a { color: var(--emerald); border-bottom: 1px solid transparent; }
   .mods-note a:hover { border-color: var(--emerald); }
 
+  /* ---- parity vignettes ---- */
+  .vign-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+  .vign {
+    background: var(--surface); border: 1px solid var(--line); border-left: 3px solid var(--emerald);
+    border-radius: 4px; padding: 20px 22px;
+  }
+  .vign h3 { font-size: 16px; margin: 0 0 8px; }
+  .vign p { margin: 0; color: var(--ink-dim); font-size: 14px; line-height: 1.6; }
+  @media (max-width: 900px) { .vign-grid { grid-template-columns: 1fr; } }
+
+  /* ---- worlds band ---- */
+  .world-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+  @media (max-width: 900px) { .world-grid { grid-template-columns: 1fr; } }
+
   /* ---- getting started ---- */
   .start-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center; }
   .code {
@@ -368,6 +382,7 @@
       <span><b>tachyne</b></span>
     </a>
     <nav class="nav-links">
+      <a class="hide-sm" href="#worlds">Worlds</a>
       <a class="hide-sm" href="#modules">Modules</a>
       <a class="hide-sm" href="#start">Get&nbsp;started</a>
       <a class="hide-xs" href="https://github.com/tachyne/tachyne-world#what-to-expect-vanilla-parity-at-a-glance">Features</a>
@@ -492,6 +507,35 @@
   </div>
 </section>
 
+<!-- ===================== PARITY ===================== -->
+<section>
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <p class="eyebrow">Vanilla parity</p>
+      <h2>It doesn't approximate the game — it re-implements it</h2>
+      <p>Mechanics are ported from the real thing, system by system, and graded against it — 38 tracked feature areas, from advancements to raids, with an honest <a href="https://github.com/tachyne/tachyne-world#what-to-expect-vanilla-parity-at-a-glance">matrix</a> and a running <a href="https://github.com/tachyne/tachyne-world/blob/main/CHANGELOG.md">changelog</a>.</p>
+    </div>
+    <div class="vign-grid reveal">
+      <div class="vign">
+        <h3>Trees grow the way vanilla grows them</h3>
+        <p>Every trunk placer and foliage shape is a port of the originals, odds included: a third of plains trees come up large oaks, mega jungle trees tower over their bushes, old-growth pines podzol their own feet. Fell a trunk and the canopy rots outward from the cut, by the real distance rule.</p>
+      </div>
+      <div class="vign">
+        <h3>Bees live real lives</h3>
+        <p>They forage the nearest flowers, carry pollen home visibly, boost the crops they cross, and fill hives that survive a server restart. Rob one without campfire smoke and the household comes out angry; break it with Silk Touch and the household moves with you.</p>
+      </div>
+      <div class="vign">
+        <h3>Redstone keeps its quirks</h3>
+        <p>Quasi-connectivity, the dispenser's 4-tick delay, comparators that read a cake, a jukebox or a lectern — the machines you already know how to build work here, because the timing and the edge cases are vanilla's.</p>
+      </div>
+      <div class="vign">
+        <h3>Structures from vanilla's own blueprints</h3>
+        <p>Villages, shipwrecks, igloos, outposts, ancient cities and trial chambers assemble from the real template and jigsaw pools; the woodland mansion runs the original grid solver, room by room, and the ocean monument is built piece for piece.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- ===================== MODULES ===================== -->
 <section class="mods-band" id="modules">
   <div class="wrap">
@@ -542,6 +586,49 @@
   </div>
 </section>
 
+<!-- ===================== WORLDS ===================== -->
+<section id="worlds">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <p class="eyebrow">Beyond vanilla</p>
+      <h2>Worlds you can't run anywhere else</h2>
+      <p>A from-scratch engine means the world itself is programmable — not just the rules on top of it.</p>
+    </div>
+    <div class="world-grid reveal">
+      <div class="mod">
+        <div class="mod-top">
+          <svg class="mod-ico" viewBox="0 0 32 32" aria-hidden="true"><rect x="2" y="2" width="28" height="28" rx="3" fill="#182420" stroke="#26332d"/><path d="M4 26 L11 10 L15 18 L20 7 L28 26 Z" fill="none" stroke="#34d98a" stroke-width="1.6" stroke-linejoin="round"/><path d="M17.5 12.5 h5" stroke="#34d98a" stroke-width="1.6"/></svg>
+          <h3>Walk the real Cape&nbsp;Town</h3>
+          <span class="badge service">earth&nbsp;mode</span>
+        </div>
+        <p>Swap the generator for Copernicus GLO-30 elevation data: greater Cape Town at true 1:1 scale, horizontally <i>and</i> vertically — the world ceiling is raised so Table Mountain's plateau stands at its real ~1,060&nbsp;m. You spawn in the city bowl, looking up at it.</p>
+        <div class="path"><span class="k">compose</span> -f docker-compose.earth.yml up</div>
+        <a class="mod-foot" href="https://github.com/tachyne/tachyne-world/blob/main/docs/EARTH.md">How earth mode works <span class="arw">→</span></a>
+      </div>
+      <div class="mod">
+        <div class="mod-top">
+          <svg class="mod-ico" viewBox="0 0 32 32" aria-hidden="true"><rect x="2" y="2" width="28" height="28" rx="3" fill="#182420" stroke="#26332d"/><rect x="10" y="8" width="12" height="10" rx="2" fill="none" stroke="#34d98a" stroke-width="1.6"/><circle cx="14" cy="13" r="1.3" fill="#34d98a"/><circle cx="18" cy="13" r="1.3" fill="#34d98a"/><path d="M16 18 v3 M12 24 h8" stroke="#34d98a" stroke-width="1.6"/></svg>
+          <h3>Villagers that think</h3>
+          <span class="badge builtin">llm&nbsp;npcs</span>
+        </div>
+        <p>Point the engine at any OpenAI-compatible endpoint and NPC villagers run a perceive&nbsp;→&nbsp;decide&nbsp;→&nbsp;act loop — they walk the village, talk back in chat, and remember you between sessions with per-NPC persistent memory.</p>
+        <div class="path"><span class="k">flag</span> -llm http://…/v1</div>
+        <a class="mod-foot" href="https://github.com/tachyne/tachyne-world">Read about the engine <span class="arw">→</span></a>
+      </div>
+      <div class="mod">
+        <div class="mod-top">
+          <svg class="mod-ico" viewBox="0 0 32 32" aria-hidden="true"><rect x="2" y="2" width="28" height="28" rx="3" fill="#182420" stroke="#26332d"/><rect x="6" y="6" width="9" height="9" rx="1.5" fill="none" stroke="#34d98a" stroke-width="1.6"/><rect x="17" y="6" width="9" height="9" rx="1.5" fill="none" stroke="#34d98a" stroke-width="1.6"/><rect x="6" y="17" width="9" height="9" rx="1.5" fill="none" stroke="#34d98a" stroke-width="1.6"/><rect x="17" y="17" width="9" height="9" rx="1.5" fill="none" stroke="#d1874e" stroke-width="1.6" stroke-dasharray="3 2"/></svg>
+          <h3>One world, many pods</h3>
+          <span class="badge daemon">sharding</span>
+        </div>
+        <p>The engine is built to split a single world into physical regions served by separate pods — cross-pod handover works today as a hard-border prototype, and the whole front tier already scales by replica. Single-pod remains the production default.</p>
+        <div class="path"><span class="k">read</span> docs/SHARDING.md</div>
+        <a class="mod-foot" href="https://github.com/tachyne/tachyne-world/blob/main/docs/SHARDING.md">The sharding design <span class="arw">→</span></a>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- ===================== GET STARTED ===================== -->
 <section id="start">
   <div class="wrap">
@@ -559,6 +646,9 @@ cd tachyne
 
 <span class="c"># one container, procedurally generated, full survival</span>
 <span class="o">TACHYNE_OPS</span>=YourName docker compose up <span class="g">-d</span>
+
+<span class="c"># …or walk the real Cape Town at true 1:1 scale</span>
+<span class="o">TACHYNE_OPS</span>=YourName docker compose <span class="g">-f</span> docker-compose.yml <span class="g">-f</span> docker-compose.earth.yml up <span class="g">-d</span>
 
 <span class="c"># now connect a client ↓</span></code></pre>
       </div>
@@ -595,6 +685,7 @@ cd tachyne
         <a href="https://github.com/tachyne/tachyne-world">Engine (tachyne-world)</a>
         <a href="https://github.com/tachyne/tachyne">Quickstart</a>
         <a href="https://github.com/tachyne/tachyne-world#what-to-expect-vanilla-parity-at-a-glance">Feature matrix</a>
+        <a href="https://github.com/tachyne/tachyne-world/blob/main/CHANGELOG.md">Changelog</a>
         <a href="https://github.com/tachyne">GitHub org</a>
       </div>
       <div class="foot-col">
