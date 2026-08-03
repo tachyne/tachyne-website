@@ -590,7 +590,7 @@
       <div class="feat">
         <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="7" cy="7" r="3"/><circle cx="17" cy="17" r="3"/><path d="M7 10v4a3 3 0 0 0 3 3h4M17 14v-4a3 3 0 0 0-3-3h-4"/></svg>
         <h3>Java &amp; Bedrock, one server</h3>
-        <p>An ingress routes each client to the right gateway by protocol. Java and Bedrock players share the same blocks, mobs, and chat — with no client mods.</p>
+        <p>An ingress routes each client to the right gateway by protocol. Java and Bedrock players share the same blocks, mobs, and chat — with no client mods. The Bedrock gateway is the younger of the two: terrain, entities, movement and chat are live, while inventory screens and the survival HUD are still on their way.</p>
       </div>
       <div class="feat">
         <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 2v4M12 18v4M2 12h4M18 12h4M5 5l3 3M16 16l3 3M19 5l-3 3M8 16l-3 3"/><circle cx="12" cy="12" r="3"/></svg>
@@ -650,31 +650,31 @@
         <div class="slide active" role="tabpanel" id="sl-0" aria-labelledby="tb-0">
           <h3>Trees grow the way vanilla grows them</h3>
           <p>Every trunk placer and foliage shape is a port of the originals, odds included: a third of plains trees come up large oaks, mega jungle trees tower over their bushes, old-growth pines podzol their own feet — and a planted sapling grows the identical tree the terrain does. Fell a trunk and the canopy rots outward from the cut, by the real distance rule.</p>
-          <p class="proof">// feature matrix: <a href="https://github.com/tachyne/tachyne-world#what-to-expect-vanilla-parity-at-a-glance">Terrain ✅ · Growth ✅</a></p>
+          <p class="proof">// feature matrix: <a href="https://github.com/tachyne/tachyne-world#what-to-expect-vanilla-parity-at-a-glance">Terrain ✅ · Growth 🟡</a></p>
         </div>
         <div class="slide" role="tabpanel" id="sl-1" aria-labelledby="tb-1" hidden>
           <h3>Bees live real lives</h3>
           <p>They forage the nearest flowers, carry pollen home visibly, boost the crops they cross, and fill hives that survive a server restart. Rob one without campfire smoke and the household comes out angry; break it with Silk Touch and the household moves with you — bees, honey and all.</p>
-          <p class="proof">// feature matrix: <a href="https://github.com/tachyne/tachyne-world#what-to-expect-vanilla-parity-at-a-glance">Mobs ✅ · Growth ✅</a></p>
+          <p class="proof">// feature matrix: <a href="https://github.com/tachyne/tachyne-world#what-to-expect-vanilla-parity-at-a-glance">Mobs ✅ · Growth 🟡</a></p>
         </div>
         <div class="slide" role="tabpanel" id="sl-2" aria-labelledby="tb-2" hidden>
           <h3>Redstone keeps its quirks</h3>
-          <p>Quasi-connectivity, the dispenser's 4-tick delay, comparators that read a cake, a jukebox or a lectern — the machines you already know how to build work here, because the timing and the edge cases are vanilla's, not a re-imagining of them.</p>
-          <p class="proof">// feature matrix: <a href="https://github.com/tachyne/tachyne-world#what-to-expect-vanilla-parity-at-a-glance">Redstone ✅ tiers 1–2</a></p>
+          <p>Quasi-connectivity, the dispenser's 4-tick delay, comparators that read a cake, a jukebox or a respawn anchor — the machines you already know how to build work here, because the timing and the edge cases are vanilla's, not a re-imagining of them.</p>
+          <p class="proof">// feature matrix: <a href="https://github.com/tachyne/tachyne-world#what-to-expect-vanilla-parity-at-a-glance">Redstone 🟡 tiers 1–2</a></p>
         </div>
         <div class="slide" role="tabpanel" id="sl-3" aria-labelledby="tb-3" hidden>
           <h3>Structures from vanilla's own blueprints</h3>
           <p>Villages, shipwrecks, igloos, outposts, ancient cities and trial chambers assemble from the real template and jigsaw pools; the woodland mansion runs the original grid solver, room by room, and the ocean monument is built piece for piece.</p>
-          <p class="proof">// feature matrix: <a href="https://github.com/tachyne/tachyne-world#what-to-expect-vanilla-parity-at-a-glance">Structures ✅ · Trial chambers ✅</a></p>
+          <p class="proof">// feature matrix: <a href="https://github.com/tachyne/tachyne-world#what-to-expect-vanilla-parity-at-a-glance">Structures 🟡 · Trial chambers ✅</a></p>
         </div>
         <div class="slide" role="tabpanel" id="sl-4" aria-labelledby="tb-4" hidden>
           <h3>Combat where the details count</h3>
-          <p>Every hit carries its vanilla damage type, and the type decides everything downstream: armour absorbs lava but not a fall, the Warden's sonic boom shrugs off Protection, and a raised shield catches exactly what vanilla lets it catch — a fireball, a wind charge, a bee sting — from its 90° arc.</p>
+          <p>Every hit carries its vanilla damage type, and the type decides everything downstream: armour absorbs lava but not a fall, the Warden's sonic boom shrugs off Protection, and a raised shield catches exactly what vanilla lets it catch — a fireball, a wind charge, a bee sting — from its front arc.</p>
           <p class="proof">// feature matrix: <a href="https://github.com/tachyne/tachyne-world#what-to-expect-vanilla-parity-at-a-glance">Combat ✅ · PvP ✅</a></p>
         </div>
         <div class="slide" role="tabpanel" id="sl-5" aria-labelledby="tb-5" hidden>
           <h3>A world that keeps happening</h3>
-          <p>Phantoms haunt sleepless nights, killing a patrol captain leaves you carrying Bad Omen — walk it into a village and the raid horn sounds, waves and all. Villagers restock and trade by profession, mobs spawn by vanilla's caps and light rules, and the world border closes in when you ask it to. Log off; the world is still there in the morning — hive occupants included.</p>
+          <p>Phantoms haunt sleepless nights, killing a patrol captain leaves you carrying Bad Omen — walk it into a village and, after vanilla&rsquo;s thirty-second fuse, the waves come. Villagers restock and trade by profession, mobs spawn by vanilla's caps and light rules, and the world border closes in when you ask it to. Log off; the world is still there in the morning — hive occupants included.</p>
           <p class="proof">// feature matrix: <a href="https://github.com/tachyne/tachyne-world#what-to-expect-vanilla-parity-at-a-glance">Survival loop ✅ · Raids 🟡</a></p>
         </div>
       </div>
@@ -724,7 +724,7 @@
           <span class="badge builtin">plugin&nbsp;api</span>
         </div>
         <p>Compile a plugin into the engine with a Bukkit-shaped Go API, or run one out-of-process on the bus. List it in the registry with a <span style="font-family:var(--mono);font-size:12px">tachyne-plugin.json</span>.</p>
-        <div class="path"><span class="k">import</span> tachyne-world/plugin</div>
+        <div class="path"><span class="k">import</span> github.com/tachyne/tachyne-world/plugin</div>
         <a class="mod-foot" href="https://github.com/tachyne/tachyne-world/blob/main/docs/PLUGINS.md">Read the plugin docs <span class="arw">→</span></a>
       </div>
     </div>
@@ -748,7 +748,7 @@
           <span class="badge service">earth&nbsp;mode</span>
         </div>
         <p>Swap the generator for Copernicus GLO-30 elevation data: greater Cape Town at true 1:1 scale, horizontally <i>and</i> vertically — the world ceiling is raised so Table Mountain's plateau stands at its real ~1,060&nbsp;m. You spawn in the city bowl, looking up at it.</p>
-        <div class="path"><span class="k">compose</span> -f docker-compose.earth.yml up</div>
+        <div class="path"><span class="k">compose</span> -f docker-compose.yml -f docker-compose.earth.yml up</div>
         <a class="mod-foot" href="https://github.com/tachyne/tachyne-world/blob/main/docs/EARTH.md">How earth mode works <span class="arw">→</span></a>
       </div>
       <div class="mod">
@@ -904,7 +904,7 @@
         <div class="cmp-b">Young, but the plumbing is complete: a Bukkit-shaped Go API, an event bus, a registry, and fleet-wide rollouts</div>
       </div>
     </div>
-    <p class="cmp-note reveal">Pick a conventional server if you want <b>the complete game and its ecosystem today</b>. Pick tachyne if you want a <b>multi-version, cloud-native world</b> built to scale horizontally — and can live with the matrix as it stands. Measured so far: <b>~150 concurrent sessions</b> on a single node. We publish what we've measured, not what we hope.</p>
+    <p class="cmp-note reveal">Pick a conventional server if you want <b>the complete game and its ecosystem today</b>. Pick tachyne if you want a <b>multi-version, cloud-native world</b> built to scale horizontally — and can live with the matrix as it stands. On numbers: the ~150 concurrent sessions this project has quoted were measured on the pre-split engine, before the gateway architecture existed — the pod stack has not been re-measured, so we claim no figure for it. We publish what we've measured, not what we hope.</p>
   </div>
 </section>
 
