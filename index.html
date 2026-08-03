@@ -288,15 +288,51 @@
   .mods-note a { color: var(--emerald); border-bottom: 1px solid transparent; }
   .mods-note a:hover { border-color: var(--emerald); }
 
-  /* ---- parity vignettes ---- */
-  .vign-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
-  .vign {
-    background: var(--surface); border: 1px solid var(--line); border-left: 3px solid var(--emerald);
-    border-radius: 4px; padding: 20px 22px;
+  /* ---- parity showcase (rotating / swappable) ---- */
+  .show { display: grid; grid-template-columns: 280px 1fr; gap: 22px; align-items: stretch; }
+  .show-tabs { display: flex; flex-direction: column; gap: 6px; }
+  .tab {
+    position: relative; text-align: left; font-family: var(--mono); font-size: 13px; font-weight: 600;
+    color: var(--ink-dim); background: transparent; border: 1px solid transparent; border-left: 3px solid var(--line);
+    border-radius: 3px; padding: 11px 14px; cursor: pointer; transition: color .15s, border-color .15s, background .15s;
   }
-  .vign h3 { font-size: 16px; margin: 0 0 8px; }
-  .vign p { margin: 0; color: var(--ink-dim); font-size: 14px; line-height: 1.6; }
-  @media (max-width: 900px) { .vign-grid { grid-template-columns: 1fr; } }
+  .tab:hover { color: var(--ink); }
+  .tab[aria-selected="true"] {
+    color: var(--ink); background: var(--surface); border-color: var(--line); border-left-color: var(--emerald);
+  }
+  .tab .fill {
+    position: absolute; left: -3px; top: 0; bottom: 0; width: 3px; background: var(--emerald);
+    transform: scaleY(0); transform-origin: top; border-radius: 3px;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .show:not(.manual) .tab[aria-selected="true"] .fill { animation: tabfill var(--show-secs, 6s) linear forwards; }
+    .show:hover .tab[aria-selected="true"] .fill,
+    .show:focus-within .tab[aria-selected="true"] .fill { animation-play-state: paused; }
+  }
+  @keyframes tabfill { from { transform: scaleY(0); } to { transform: scaleY(1); } }
+  .show-panel {
+    position: relative; background: var(--surface); border: 1px solid var(--line); border-radius: 4px;
+    padding: 26px 28px; overflow: hidden; min-height: 200px;
+  }
+  .slide { display: none; }
+  .slide.active { display: block; animation: none; }
+  @media (prefers-reduced-motion: no-preference) {
+    .slide.active { animation: slidein .45s ease; }
+  }
+  @keyframes slidein { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+  .slide h3 { font-size: 19px; margin: 0 0 10px; }
+  .slide p { margin: 0 0 14px; color: var(--ink-dim); font-size: 15px; line-height: 1.65; }
+  .slide .proof { font-family: var(--mono); font-size: 12.5px; color: var(--copper); }
+  .slide .proof a { color: inherit; border-bottom: 1px dotted transparent; }
+  .slide .proof a:hover { border-color: var(--copper); }
+  @media (max-width: 900px) {
+    .show { grid-template-columns: 1fr; }
+    .show-tabs { flex-direction: row; overflow-x: auto; padding-bottom: 4px; }
+    .tab { flex: none; border-left: none; border-bottom: 3px solid var(--line); }
+    .tab[aria-selected="true"] { border-left-color: var(--line); border-bottom-color: var(--emerald); }
+    .tab .fill { left: 0; right: 0; top: auto; bottom: -3px; width: auto; height: 3px; transform: scaleX(0); transform-origin: left; }
+    @keyframes tabfill { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+  }
 
   /* ---- worlds band ---- */
   .world-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
@@ -515,22 +551,46 @@
       <h2>It doesn't approximate the game — it re-implements it</h2>
       <p>Mechanics are ported from the real thing, system by system, and graded against it — 38 tracked feature areas, from advancements to raids, with an honest <a href="https://github.com/tachyne/tachyne-world#what-to-expect-vanilla-parity-at-a-glance">matrix</a> and a running <a href="https://github.com/tachyne/tachyne-world/blob/main/CHANGELOG.md">changelog</a>.</p>
     </div>
-    <div class="vign-grid reveal">
-      <div class="vign">
-        <h3>Trees grow the way vanilla grows them</h3>
-        <p>Every trunk placer and foliage shape is a port of the originals, odds included: a third of plains trees come up large oaks, mega jungle trees tower over their bushes, old-growth pines podzol their own feet. Fell a trunk and the canopy rots outward from the cut, by the real distance rule.</p>
+    <div class="show reveal" id="showcase" style="--show-secs:6.5s">
+      <div class="show-tabs" role="tablist" aria-label="Parity showcase">
+        <button class="tab" role="tab" aria-selected="true"  aria-controls="sl-0" id="tb-0">trees<span class="fill"></span></button>
+        <button class="tab" role="tab" aria-selected="false" aria-controls="sl-1" id="tb-1">bees<span class="fill"></span></button>
+        <button class="tab" role="tab" aria-selected="false" aria-controls="sl-2" id="tb-2">redstone<span class="fill"></span></button>
+        <button class="tab" role="tab" aria-selected="false" aria-controls="sl-3" id="tb-3">structures<span class="fill"></span></button>
+        <button class="tab" role="tab" aria-selected="false" aria-controls="sl-4" id="tb-4">combat<span class="fill"></span></button>
+        <button class="tab" role="tab" aria-selected="false" aria-controls="sl-5" id="tb-5">the living world<span class="fill"></span></button>
       </div>
-      <div class="vign">
-        <h3>Bees live real lives</h3>
-        <p>They forage the nearest flowers, carry pollen home visibly, boost the crops they cross, and fill hives that survive a server restart. Rob one without campfire smoke and the household comes out angry; break it with Silk Touch and the household moves with you.</p>
-      </div>
-      <div class="vign">
-        <h3>Redstone keeps its quirks</h3>
-        <p>Quasi-connectivity, the dispenser's 4-tick delay, comparators that read a cake, a jukebox or a lectern — the machines you already know how to build work here, because the timing and the edge cases are vanilla's.</p>
-      </div>
-      <div class="vign">
-        <h3>Structures from vanilla's own blueprints</h3>
-        <p>Villages, shipwrecks, igloos, outposts, ancient cities and trial chambers assemble from the real template and jigsaw pools; the woodland mansion runs the original grid solver, room by room, and the ocean monument is built piece for piece.</p>
+      <div class="show-panel">
+        <div class="slide active" role="tabpanel" id="sl-0" aria-labelledby="tb-0">
+          <h3>Trees grow the way vanilla grows them</h3>
+          <p>Every trunk placer and foliage shape is a port of the originals, odds included: a third of plains trees come up large oaks, mega jungle trees tower over their bushes, old-growth pines podzol their own feet — and a planted sapling grows the identical tree the terrain does. Fell a trunk and the canopy rots outward from the cut, by the real distance rule.</p>
+          <p class="proof">// feature matrix: <a href="https://github.com/tachyne/tachyne-world#what-to-expect-vanilla-parity-at-a-glance">Terrain ✅ · Growth ✅</a></p>
+        </div>
+        <div class="slide" role="tabpanel" id="sl-1" aria-labelledby="tb-1" hidden>
+          <h3>Bees live real lives</h3>
+          <p>They forage the nearest flowers, carry pollen home visibly, boost the crops they cross, and fill hives that survive a server restart. Rob one without campfire smoke and the household comes out angry; break it with Silk Touch and the household moves with you — bees, honey and all.</p>
+          <p class="proof">// feature matrix: <a href="https://github.com/tachyne/tachyne-world#what-to-expect-vanilla-parity-at-a-glance">Mobs ✅ · Growth ✅</a></p>
+        </div>
+        <div class="slide" role="tabpanel" id="sl-2" aria-labelledby="tb-2" hidden>
+          <h3>Redstone keeps its quirks</h3>
+          <p>Quasi-connectivity, the dispenser's 4-tick delay, comparators that read a cake, a jukebox or a lectern — the machines you already know how to build work here, because the timing and the edge cases are vanilla's, not a re-imagining of them.</p>
+          <p class="proof">// feature matrix: <a href="https://github.com/tachyne/tachyne-world#what-to-expect-vanilla-parity-at-a-glance">Redstone ✅ tiers 1–2</a></p>
+        </div>
+        <div class="slide" role="tabpanel" id="sl-3" aria-labelledby="tb-3" hidden>
+          <h3>Structures from vanilla's own blueprints</h3>
+          <p>Villages, shipwrecks, igloos, outposts, ancient cities and trial chambers assemble from the real template and jigsaw pools; the woodland mansion runs the original grid solver, room by room, and the ocean monument is built piece for piece.</p>
+          <p class="proof">// feature matrix: <a href="https://github.com/tachyne/tachyne-world#what-to-expect-vanilla-parity-at-a-glance">Structures ✅ · Trial chambers ✅</a></p>
+        </div>
+        <div class="slide" role="tabpanel" id="sl-4" aria-labelledby="tb-4" hidden>
+          <h3>Combat where the details count</h3>
+          <p>Every hit carries its vanilla damage type, and the type decides everything downstream: armour absorbs lava but not a fall, the Warden's sonic boom shrugs off Protection, and a raised shield catches exactly what vanilla lets it catch — a fireball, a wind charge, a bee sting — from its 90° arc.</p>
+          <p class="proof">// feature matrix: <a href="https://github.com/tachyne/tachyne-world#what-to-expect-vanilla-parity-at-a-glance">Combat ✅ · PvP ✅</a></p>
+        </div>
+        <div class="slide" role="tabpanel" id="sl-5" aria-labelledby="tb-5" hidden>
+          <h3>A world that keeps happening</h3>
+          <p>Phantoms haunt sleepless nights, an ominous banner starts a real raid, villagers restock and trade by profession, mobs spawn by vanilla's caps and light rules, and the world border closes in when you ask it to. Log off; the world is still there in the morning — hive occupants included.</p>
+          <p class="proof">// feature matrix: <a href="https://github.com/tachyne/tachyne-world#what-to-expect-vanilla-parity-at-a-glance">Raids ✅ · Survival loop ✅</a></p>
+        </div>
       </div>
     </div>
   </div>
@@ -719,6 +779,29 @@ cd tachyne
       if (!cur) cur = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
       root.setAttribute('data-theme', cur === 'dark' ? 'light' : 'dark');
     });
+    // parity showcase: rotate slides; a manual pick hands over control
+    var show = document.getElementById('showcase');
+    if (show) {
+      var tabs = show.querySelectorAll('.tab'), slides = show.querySelectorAll('.slide'),
+          idx = 0, timer = null, secs = 6500, hovered = false;
+      function go(i, manual) {
+        idx = i;
+        tabs.forEach(function (t, j) { t.setAttribute('aria-selected', j === i ? 'true' : 'false'); });
+        slides.forEach(function (sl, j) {
+          sl.classList.toggle('active', j === i);
+          if (j === i) sl.removeAttribute('hidden'); else sl.setAttribute('hidden', '');
+        });
+        if (manual) { show.classList.add('manual'); if (timer) { clearInterval(timer); timer = null; } }
+      }
+      tabs.forEach(function (t, i) { t.addEventListener('click', function () { go(i, true); }); });
+      show.addEventListener('mouseenter', function () { hovered = true; });
+      show.addEventListener('mouseleave', function () { hovered = false; });
+      if (matchMedia('(prefers-reduced-motion: no-preference)').matches) {
+        timer = setInterval(function () {
+          if (!hovered && !show.matches(':focus-within')) go((idx + 1) % slides.length, false);
+        }, secs);
+      }
+    }
     // scroll reveal
     var io = new IntersectionObserver(function (es) {
       es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
