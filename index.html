@@ -664,17 +664,17 @@
         </div>
         <div class="slide" role="tabpanel" id="sl-3" aria-labelledby="tb-3" hidden>
           <h3>Structures from vanilla's own blueprints</h3>
-          <p>Villages, shipwrecks, igloos, outposts, ancient cities and trial chambers assemble from the real template and jigsaw pools; the woodland mansion runs the original grid solver, room by room, and the ocean monument is built piece for piece.</p>
-          <p class="proof">// feature matrix: <a href="https://github.com/tachyne/tachyne-world#what-to-expect-vanilla-parity-at-a-glance">Structures 🟡 · Trial chambers ✅</a></p>
+          <p>Villages, shipwrecks, igloos, outposts, jungle temples, swamp huts, ocean ruins, ancient cities and trial chambers assemble from the real template and jigsaw pools; ruined portals come buried, overgrown or on the sea floor by biome, aged and half of them mirrored; the woodland mansion runs the original grid solver, room by room, and the ocean monument is built piece for piece. Underneath, lush and dripstone caves, the Nether's biomes and ores, and the outer End's chorus forests and gateways are placed on vanilla's own rules.</p>
+          <p class="proof">// feature matrix: <a href="https://github.com/tachyne/tachyne-world#what-to-expect-vanilla-parity-at-a-glance">Structures 🟡 · The Nether / The End 🟡</a></p>
         </div>
         <div class="slide" role="tabpanel" id="sl-4" aria-labelledby="tb-4" hidden>
           <h3>Combat where the details count</h3>
-          <p>Every hit carries its vanilla damage type, and the type decides everything downstream: armour absorbs lava but not a fall, the Warden's sonic boom shrugs off Protection, and a raised shield catches exactly what vanilla lets it catch — a fireball, a wind charge, a bee sting — from its front arc.</p>
+          <p>Every hit carries its vanilla damage type, and the type decides everything downstream: armour absorbs lava but not a fall, the Warden's sonic boom shrugs off Protection, and a raised shield catches exactly what vanilla lets it catch — a fireball, a wind charge, a bee sting — from its front arc, until an axe blow disables it for five seconds. Explosions hurt by what the blast can see of you through the blocks, lit TNT hops and gets thrown by other blasts, a wind charge at your feet launches you, and every cooldown the server keeps is drawn on your hotbar.</p>
           <p class="proof">// feature matrix: <a href="https://github.com/tachyne/tachyne-world#what-to-expect-vanilla-parity-at-a-glance">Combat ✅ · PvP ✅</a></p>
         </div>
         <div class="slide" role="tabpanel" id="sl-5" aria-labelledby="tb-5" hidden>
           <h3>A world that keeps happening</h3>
-          <p>Phantoms haunt sleepless nights, killing a patrol captain leaves you carrying Bad Omen — walk it into a village and, after vanilla&rsquo;s thirty-second fuse, the waves come. Villagers restock and trade by profession, mobs spawn by vanilla's caps and light rules, and the world border closes in when you ask it to. Log off; the world is still there in the morning — hive occupants included.</p>
+          <p>Phantoms haunt sleepless nights, killing a patrol captain leaves you carrying Bad Omen — walk it into a village and, after vanilla&rsquo;s thirty-second fuse, the waves come. Villages are peopled the way vanilla's are — born unemployed, taking the nearest free workstation, farmers farming, couples breeding when a bed is free, a nitwit in twelve — and sculk sensors hear what vanilla's hear: footsteps, doors, chests, a splash, a landing. Mobs spawn by vanilla's caps and light rules, anvils wear out, menus close when you walk off, and the world border closes in when you ask it to. Log off; the world is still there in the morning — hive occupants included.</p>
           <p class="proof">// feature matrix: <a href="https://github.com/tachyne/tachyne-world#what-to-expect-vanilla-parity-at-a-glance">Survival loop ✅ · Raids 🟡</a></p>
         </div>
       </div>
@@ -780,12 +780,12 @@
   <div class="wrap">
     <div class="sec-head reveal">
       <p class="eyebrow">Feature breakdown</p>
-      <h2>38 areas, graded in public</h2>
-      <p>Parity is tracked area by area and published as it stands — complete, in progress, or not started. Nothing here is aspirational; the <a href="https://github.com/tachyne/tachyne-world#what-to-expect-vanilla-parity-at-a-glance">full matrix</a> spells out exactly what each status means, down to the caveats.</p>
+      <h2>39 areas, graded in public</h2>
+      <p>Parity is tracked area by area and published as it stands — complete, in progress, or not started. Nothing here is aspirational; the <a href="https://github.com/tachyne/tachyne-world#what-to-expect-vanilla-parity-at-a-glance">full matrix</a> spells out exactly what each status means, down to the caveats. Behind it, vanilla's surface is enumerated mechanically — goals, blocks, items, recipes, loot, game rules, sounds, the events clients animate — and every item graded against the game's own code. Graded as of 2026-09-19.</p>
     </div>
     <div class="tally reveal">
-      <span><i class="dot-s d-done"></i><b>21</b>&nbsp;complete</span>
-      <span><i class="dot-s d-wip"></i><b>16</b>&nbsp;in progress, playable</span>
+      <span><i class="dot-s d-done"></i><b>23</b>&nbsp;complete</span>
+      <span><i class="dot-s d-wip"></i><b>15</b>&nbsp;in progress, playable</span>
       <span><i class="dot-s d-none"></i><b>1</b>&nbsp;not started</span>
     </div>
     <div class="mx-grid reveal">
@@ -828,13 +828,14 @@
           <li><span class="dot-s d-wip"></span>Beacon</li>
           <li><span class="dot-s d-wip"></span>Note blocks &amp; jukebox</li>
           <li><span class="dot-s d-done"></span>Signs</li>
+          <li><span class="dot-s d-done"></span>Shelves</li>
         </ul>
       </div>
       <div class="mx-col">
         <h4>Progression &amp; UI</h4>
         <ul>
           <li><span class="dot-s d-done"></span>Advancements</li>
-          <li><span class="dot-s d-wip"></span>Statistics</li>
+          <li><span class="dot-s d-done"></span>Statistics</li>
           <li><span class="dot-s d-done"></span>Scoreboard &amp; teams</li>
           <li><span class="dot-s d-done"></span>Filled maps</li>
           <li><span class="dot-s d-done"></span>Locator bar</li>
@@ -896,7 +897,7 @@
       <div class="cmp-row">
         <div class="cmp-k">Gameplay</div>
         <div class="cmp-a">Complete vanilla</div>
-        <div class="cmp-b">Vanilla parity in progress — 21 of 38 areas complete, graded above</div>
+        <div class="cmp-b">Vanilla parity in progress — 23 of 39 areas complete, graded above</div>
       </div>
       <div class="cmp-row">
         <div class="cmp-k">Ecosystem</div>
