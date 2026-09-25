@@ -3,10 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="A Minecraft-compatible server, written from scratch in pure Go, with a versionless core. Java 1.21.5–1.21.8, Java 26.2, and Bedrock join one world — with vanilla-faithful mechanics, real-Earth terrain, and LLM-driven villagers.">
+<meta name="description" content="A Minecraft-compatible server, written from scratch in pure Go, with a versionless core. Java 26.2–26.3 and Bedrock join one world — with vanilla-faithful mechanics, real-Earth terrain, and LLM-driven villagers.">
 <meta property="og:type" content="website">
 <meta property="og:title" content="tachyne — one world, every client">
-<meta property="og:description" content="A Minecraft-compatible server, written from scratch in pure Go, with a versionless core. Java 1.21.5–1.21.8, Java 26.2, and Bedrock join one world — with vanilla-faithful mechanics, real-Earth terrain, and LLM-driven villagers.">
+<meta property="og:description" content="A Minecraft-compatible server, written from scratch in pure Go, with a versionless core. Java 26.2–26.3 and Bedrock join one world — with vanilla-faithful mechanics, real-Earth terrain, and LLM-driven villagers.">
 <meta property="og:url" content="https://tachyne.com">
 <meta property="og:site_name" content="tachyne">
 <meta property="og:image" content="https://tachyne.com/og.png">
@@ -14,7 +14,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="tachyne — one world, every client">
-<meta name="twitter:description" content="A versionless, from-scratch Minecraft server in pure Go. Java 1.21.5–1.21.8, Java 26.2, and Bedrock join one world.">
+<meta name="twitter:description" content="A versionless, from-scratch Minecraft server in pure Go. Java 26.2–26.3 and Bedrock join one world.">
 <meta name="twitter:image" content="https://tachyne.com/og.png">
 <meta name="robots" content="index, follow">
 <meta name="theme-color" content="#0e1512">
@@ -32,7 +32,7 @@
     {
       "@type": "SoftwareSourceCode",
       "name": "tachyne",
-      "description": "A versionless, from-scratch Minecraft-compatible server engine in pure Go. Java 1.21.5–1.21.8, Java 26.2, and Bedrock join one world with no client mods.",
+      "description": "A versionless, from-scratch Minecraft-compatible server engine in pure Go. Java 26.2–26.3 and Bedrock join one world with no client mods.",
       "url": "https://tachyne.com/",
       "codeRepository": "https://github.com/tachyne",
       "programmingLanguage": "Go",
@@ -504,14 +504,14 @@
     <div class="hero-copy">
       <p class="eyebrow">A Minecraft server, from scratch in Go</p>
       <h1>One world.<br><span class="accent">Every client.</span></h1>
-      <p class="lede">tachyne is a Minecraft-compatible server with a <b>versionless core</b>. The game is a database of simulation events; every version-specific concern lives at the edge. Java&nbsp;1.21.5–1.21.8, Java&nbsp;26.2, and Bedrock all join the <b>same world</b> — no client mods, no proxy bolted on after the fact.</p>
+      <p class="lede">tachyne is a Minecraft-compatible server with a <b>versionless core</b>. The game is a database of simulation events; every version-specific concern lives at the edge. Java&nbsp;26.2–26.3 and Bedrock all join the <b>same world</b> — no client mods, no proxy bolted on after the fact.</p>
       <div class="hero-cta">
         <a class="btn btn-primary" href="#start">Run it in one command <span class="arw">→</span></a>
         <a class="btn" href="https://github.com/tachyne">★ Star on GitHub</a>
       </div>
       <div class="facts">
-        <span class="fact"><b>Java</b> 1.21.5–1.21.8</span>
         <span class="fact"><b>Java</b> 26.2</span>
+        <span class="fact"><b>Java</b> 26.3</span>
         <span class="fact"><b>Bedrock</b> latest</span>
         <span class="fact"><b>Pure Go</b> · no JVM</span>
         <span class="fact"><b>Apache-2.0</b></span>
@@ -525,11 +525,11 @@
         <!-- clients -->
         <g>
           <rect class="node-box" x="8"  y="8" width="104" height="40" rx="3"/>
-          <text class="node-t" x="60" y="27" text-anchor="middle">Java 1.21.5–.8</text>
+          <text class="node-t" x="60" y="27" text-anchor="middle">Java 26.2</text>
           <text class="node-s" x="60" y="40" text-anchor="middle">proto 770–772</text>
 
           <rect class="node-box" x="128" y="8" width="104" height="40" rx="3"/>
-          <text class="node-t" x="180" y="27" text-anchor="middle">Java 26.2</text>
+          <text class="node-t" x="180" y="27" text-anchor="middle">Java 26.3</text>
           <text class="node-s" x="180" y="40" text-anchor="middle">proto 776</text>
 
           <rect class="node-box" x="248" y="8" width="104" height="40" rx="3"/>
@@ -920,8 +920,8 @@
     <div class="repo-grid reveal">
       <a class="repo" href="https://github.com/tachyne/tachyne-world"><span class="rn">tachyne-world</span><span class="rd">The engine: all simulation and worldgen, speaking only domain events — plus sharding and earth mode</span><span class="arw">→</span></a>
       <a class="repo" href="https://github.com/tachyne/tachyne-common"><span class="rn">tachyne-common</span><span class="rd">The shared wire library: attach protocol, canonical renderer, and the multi-version translation chain</span><span class="arw">→</span></a>
-      <a class="repo" href="https://github.com/tachyne/tachyne-gw-java-770"><span class="rn">tachyne-gw-java-770</span><span class="rd">Java gateway for 1.21.5–1.21.8 (protocols 770–772)</span><span class="arw">→</span></a>
-      <a class="repo" href="https://github.com/tachyne/tachyne-gw-java-776"><span class="rn">tachyne-gw-java-776</span><span class="rd">Java gateway for 26.2 (protocol 776), running the full translation chain</span><span class="arw">→</span></a>
+      <a class="repo" href="https://github.com/tachyne/tachyne-gw-java-770"><span class="rn">tachyne-gw-java-770</span><span class="rd">Retired Java gateway for 1.21.5–1.21.8 (protocols 770–772), kept for reference</span><span class="arw">→</span></a>
+      <a class="repo" href="https://github.com/tachyne/tachyne-gw-java-776"><span class="rn">tachyne-gw-java-776</span><span class="rd">Java gateway for 26.2–26.3 (protocols 776–777), running the full translation chain</span><span class="arw">→</span></a>
       <a class="repo" href="https://github.com/tachyne/tachyne-gw-bedrock"><span class="rn">tachyne-gw-bedrock</span><span class="rd">Bedrock gateway over RakNet, tracking the latest Bedrock release</span><span class="arw">→</span></a>
       <a class="repo" href="https://github.com/tachyne/tachyne-ingress"><span class="rn">tachyne-ingress</span><span class="rd">The single front door: routes Java clients by protocol version, forwards Bedrock UDP</span><span class="arw">→</span></a>
       <a class="repo" href="https://github.com/tachyne/tachyne-access"><span class="rn">tachyne-access</span><span class="rd">Authorization: whitelist, bans, roles and an ordered IP ACL, Postgres-backed</span><span class="arw">→</span></a>
@@ -958,9 +958,9 @@ cd tachyne
       </div>
       <div class="reveal">
         <ul>
-          <li><span class="pin">▸</span><span><b>Java</b> — point 1.21.5–1.21.8 or 26.2 at <b>&lt;host&gt;:25565</b></span></li>
+          <li><span class="pin">▸</span><span><b>Java</b> — point 26.2 or 26.3 at <b>&lt;host&gt;:25565</b></span></li>
           <li><span class="pin">▸</span><span><b>Bedrock</b> — point the latest client at <b>&lt;host&gt;:19132</b></span></li>
-          <li><span class="pin">▸</span><span>No whitelist, offline-mode by default — perfect for a LAN</span></li>
+          <li><span class="pin">▸</span><span>No whitelist, offline-mode by default — perfect for a LAN; set <b>TACHYNE_ONLINE_MODE=on</b> and use tachyne-access before exposing it to the internet</span></li>
           <li><span class="pin">▸</span><span>Add <b>tachyne-access</b> for real whitelist / ban / IP policy</span></li>
         </ul>
         <p class="warn">A fresh server is open by default (anyone can join under any name). Don't expose it to the internet as-is — see the quickstart's security note.</p>
