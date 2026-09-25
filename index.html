@@ -526,40 +526,37 @@
         <g>
           <rect class="node-box" x="8"  y="8" width="104" height="40" rx="3"/>
           <text class="node-t" x="60" y="27" text-anchor="middle">Java 26.2</text>
-          <text class="node-s" x="60" y="40" text-anchor="middle">proto 770–772</text>
+          <text class="node-s" x="60" y="40" text-anchor="middle">protocol 776</text>
 
           <rect class="node-box" x="128" y="8" width="104" height="40" rx="3"/>
           <text class="node-t" x="180" y="27" text-anchor="middle">Java 26.3</text>
-          <text class="node-s" x="180" y="40" text-anchor="middle">proto 776</text>
+          <text class="node-s" x="180" y="40" text-anchor="middle">protocol 777</text>
 
           <rect class="node-box" x="248" y="8" width="104" height="40" rx="3"/>
           <text class="node-t" x="300" y="27" text-anchor="middle">Bedrock</text>
           <text class="node-s" x="300" y="40" text-anchor="middle">RakNet / UDP</text>
         </g>
         <!-- edges clients -> gateways -->
-        <path class="edge" d="M60 48 L60 84"/>
-        <path class="edge" d="M180 48 L180 84"/>
+        <path class="edge" d="M60 48 L110 84"/>
+        <path class="edge" d="M180 48 L130 84"/>
         <path class="edge" d="M300 48 L300 84"/>
         <!-- gateways -->
         <g>
-          <rect class="node-box" x="16" y="84" width="88" height="38" rx="3"/>
-          <text class="node-t" x="60" y="107" text-anchor="middle">gw-java-770</text>
-          <rect class="node-box" x="136" y="84" width="88" height="38" rx="3"/>
-          <text class="node-t" x="180" y="107" text-anchor="middle">gw-java-776</text>
+          <rect class="node-box" x="46" y="84" width="148" height="38" rx="3"/>
+          <text class="node-t" x="120" y="107" text-anchor="middle">gw-java-776</text>
           <rect class="node-box" x="256" y="84" width="88" height="38" rx="3"/>
           <text class="node-t" x="300" y="107" text-anchor="middle">gw-bedrock</text>
         </g>
         <text class="node-s" x="180" y="140" text-anchor="middle">render per version&nbsp;·&nbsp;translate wire</text>
         <!-- flows gateways -> engine -->
-        <path class="flow" d="M60 122 C60 165, 180 150, 180 196"/>
-        <path class="flow" d="M180 122 L180 196"/>
+        <path class="flow" d="M120 122 C120 165, 180 150, 180 196"/>
         <path class="flow" d="M300 122 C300 165, 180 150, 180 196"/>
         <!-- engine -->
         <rect class="node-engine" x="70" y="196" width="220" height="52" rx="4"/>
         <circle class="pulse" cx="92" cy="222" r="5"/>
         <text class="node-t" x="185" y="219" text-anchor="middle" style="font-size:13px">tachyne-world</text>
         <text class="node-s" x="185" y="234" text-anchor="middle">ONE versionless engine · 20 TPS</text>
-        <text class="node-s" x="180" y="272" text-anchor="middle">canonical 1.21.11 · speaks no wire protocol</text>
+        <text class="node-s" x="180" y="272" text-anchor="middle">canonical 26.3 · speaks no wire protocol</text>
         <text class="node-s" x="180" y="288" text-anchor="middle" style="fill:var(--emerald)">a new version = a new gateway step — the engine never changes</text>
       </svg>
     </div>
@@ -781,12 +778,12 @@
     <div class="sec-head reveal">
       <p class="eyebrow">Feature breakdown</p>
       <h2>39 areas, graded in public</h2>
-      <p>Parity is tracked area by area and published as it stands — complete, in progress, or not started. Nothing here is aspirational; the <a href="https://github.com/tachyne/tachyne-world#what-to-expect-vanilla-parity-at-a-glance">full matrix</a> spells out exactly what each status means, down to the caveats. Behind it, vanilla's surface is enumerated mechanically — goals, blocks, items, recipes, loot, game rules, sounds, the events clients animate — and every item graded against the game's own code. Graded as of 2026-09-19.</p>
+      <p>Parity is tracked area by area and published as it stands — complete, in progress, or not started. Nothing here is aspirational; the <a href="https://github.com/tachyne/tachyne-world#what-to-expect-vanilla-parity-at-a-glance">full matrix</a> spells out exactly what each status means, down to the caveats. Behind it, vanilla's surface is enumerated mechanically — goals, blocks, items, recipes, loot, game rules, sounds, the events clients animate — and every item graded against the game's own code. Re-graded 2026-09-24: of 2,327 gradeable units, 64% match vanilla one-for-one, 28% exist with a deviation and 8% are missing — see the <a href="https://github.com/tachyne/tachyne-world/blob/main/docs/PARITY.md">per-dimension scorecard</a>. Mob behaviour is the furthest behind: most goal lists still differ from vanilla somewhere.</p>
     </div>
     <div class="tally reveal">
-      <span><i class="dot-s d-done"></i><b>23</b>&nbsp;complete</span>
-      <span><i class="dot-s d-wip"></i><b>15</b>&nbsp;in progress, playable</span>
-      <span><i class="dot-s d-none"></i><b>1</b>&nbsp;not started</span>
+      <span><i class="dot-s d-done"></i><b>22</b>&nbsp;complete</span>
+      <span><i class="dot-s d-wip"></i><b>17</b>&nbsp;in progress, playable</span>
+      <span><i class="dot-s d-none"></i><b>0</b>&nbsp;not started</span>
     </div>
     <div class="mx-grid reveal">
       <div class="mx-col">
@@ -805,7 +802,7 @@
       <div class="mx-col">
         <h4>Play &amp; creatures</h4>
         <ul>
-          <li><span class="dot-s d-done"></span>Mobs</li>
+          <li><span class="dot-s d-wip"></span>Mobs</li>
           <li><span class="dot-s d-done"></span>Combat</li>
           <li><span class="dot-s d-done"></span>PvP</li>
           <li><span class="dot-s d-done"></span>Survival loop</li>
@@ -848,7 +845,7 @@
         <ul>
           <li><span class="dot-s d-done"></span>Plugins</li>
           <li><span class="dot-s d-wip"></span>Commands &amp; gamerules</li>
-          <li><span class="dot-s d-none"></span>Online-mode auth / chat signing</li>
+          <li><span class="dot-s d-wip"></span>Online-mode auth / chat signing</li>
         </ul>
       </div>
     </div>
